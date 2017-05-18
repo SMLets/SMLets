@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?><ManagementPack ContentReadable="true" SchemaVersion="2.0" OriginalSchemaVersion="1.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+  <Manifest>
+    <Identity>
+      <ID>EnumMP</ID>
+      <Version>1.0.0.0</Version>
+    </Identity>
+    <Name>Enumeration Test MP</Name>
+    <References>
+      <Reference Alias="InstanceGroup">
+        <ID>Microsoft.SystemCenter.InstanceGroup.Library</ID>
+        <Version>7.5.1168.0</Version>
+        <PublicKeyToken>9396306c2be7fcc4</PublicKeyToken>
+      </Reference>
+      <Reference Alias="WorkItem">
+        <ID>System.WorkItem.Library</ID>
+        <Version>7.5.1168.0</Version>
+        <PublicKeyToken>9396306c2be7fcc4</PublicKeyToken>
+      </Reference>
+      <Reference Alias="SystemCenter">
+        <ID>Microsoft.SystemCenter.Library</ID>
+        <Version>7.5.1168.0</Version>
+        <PublicKeyToken>9396306c2be7fcc4</PublicKeyToken>
+      </Reference>
+      <Reference Alias="System">
+        <ID>System.Library</ID>
+        <Version>7.5.1168.0</Version>
+        <PublicKeyToken>9396306c2be7fcc4</PublicKeyToken>
+      </Reference>
+      <Reference Alias="Windows">
+        <ID>Microsoft.Windows.Library</ID>
+        <Version>7.5.1168.0</Version>
+        <PublicKeyToken>9396306c2be7fcc4</PublicKeyToken>
+      </Reference>
+      <Reference Alias="Activity">
+        <ID>System.WorkItem.Activity.Library</ID>
+        <Version>7.5.1168.0</Version>
+        <PublicKeyToken>9396306c2be7fcc4</PublicKeyToken>
+      </Reference>
+      <Reference Alias="Notifications">
+        <ID>System.Notifications.Library</ID>
+        <Version>7.5.1168.0</Version>
+        <PublicKeyToken>9396306c2be7fcc4</PublicKeyToken>
+      </Reference>
+    </References>
+  </Manifest>
+  <TypeDefinitions>
+    <EntityTypes>
+        <EnumerationTypes>
+            <EnumerationValue ID="System.WorkItem.TroubleTicket.UrgencyEnum.MediumHigh" Accessibility="Public" Parent="WorkItem!System.WorkItem.TroubleTicket.UrgencyEnum" Ordinal="8" />
+        </EnumerationTypes>
+    </EntityTypes>
+  </TypeDefinitions>
+</ManagementPack>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Criteria xmlns="http://Microsoft.EnterpriseManagement.Core.Criteria/">
+  <Reference Id="System.WorkItem.Incident.Library" PublicKeyToken="31bf3856ad364e35" Version="7.0.5826.0" Alias="WorkItem" />
+  <Expression>
+    <And>
+      <Expression>
+        <SimpleExpression>
+          <ValueExpressionLeft>
+            <Property>$Context/Property[Type='WorkItem!System.WorkItem.Incident']/Title$</Property>
+          </ValueExpressionLeft>
+          <Operator>Like</Operator>
+          <ValueExpressionRight>
+            <Value>%</Value>
+          </ValueExpressionRight>
+        </SimpleExpression>
+      </Expression>
+      <Expression>
+        <SimpleExpression>
+          <ValueExpressionLeft>
+            <Property>$Context/Property[Type='WorkItem!System.WorkItem.Incident']/Status$</Property>
+          </ValueExpressionLeft>
+          <Operator>Equal</Operator>
+          <ValueExpressionRight>
+            <Value>5e2d3932-ca6d-1515-7310-6f58584df73e</Value>
+          </ValueExpressionRight>
+        </SimpleExpression>
+      </Expression>
+      <Expression>
+        <SimpleExpression>
+          <ValueExpressionLeft>
+            <Property>$Target/Property[Type='IncidentManagement!System.WorkItem.Incident']/Priority$</Property>
+          </ValueExpressionLeft>
+          <Operator>Equal</Operator>
+          <ValueExpressionRight>
+            <Value>1</Value>
+          </ValueExpressionRight>
+        </SimpleExpression>
+      </Expression>
+    </And>
+  </Expression>
+</Criteria>

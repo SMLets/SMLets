@@ -1,0 +1,389 @@
+﻿<!-- Schema for SDK Instance space criteria -->
+<xsd:schema targetNamespace="http://Microsoft.EnterpriseManagement.Core.Criteria/"
+    elementFormDefault="qualified"
+    xmlns="http://Microsoft.EnterpriseManagement.Core.Criteria/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:simpleType name="RegExOperatorType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="ContainsSubstring">
+        <xsd:annotation>
+          <xsd:documentation>Contains substring.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MatchesWildcard">
+        <xsd:annotation>
+          <xsd:documentation>Matches wildcard.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="MatchesRegularExpression">
+        <xsd:annotation>
+          <xsd:documentation>Matches regular expression.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="DoesNotContainSubstring">
+        <xsd:annotation>
+          <xsd:documentation>Does not contain substring.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="DoesNotMatchWildcard">
+        <xsd:annotation>
+          <xsd:documentation>Does not match wildcard.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="DoesNotMatchRegularExpression">
+        <xsd:annotation>
+          <xsd:documentation>Does not match regular expression.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="CriteriaOperatorType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="Equal">
+        <xsd:annotation>
+          <xsd:documentation>Equal to.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="NotEqual">
+        <xsd:annotation>
+          <xsd:documentation>Not equal to.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Greater">
+        <xsd:annotation>
+          <xsd:documentation>Greater than.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Less">
+        <xsd:annotation>
+          <xsd:documentation>Less than.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="GreaterEqual">
+        <xsd:annotation>
+          <xsd:documentation>Greator than or equal to.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="Like">
+        <xsd:annotation>
+          <xsd:documentation>SQL LIKE operator.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="NotLike">
+        <xsd:annotation>
+          <xsd:documentation>SQL NOT LIKE operator.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="LessEqual">
+        <xsd:annotation>
+          <xsd:documentation>Less than or equal to.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="UnaryOperatorType">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="IsNull">
+        <xsd:annotation>
+          <xsd:documentation>Is null.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="IsNotNull">
+        <xsd:annotation>
+          <xsd:documentation>Is not null.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ManagementPackNameType">
+    <xsd:annotation>
+      <xsd:documentation>Defines the structure of a ManagementPack name.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="1"/>
+      <xsd:maxLength value="256"/>
+      <xsd:pattern value="[A-Za-z0-9_\.]+"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ManagementPackVersionType">
+    <xsd:annotation>
+      <xsd:documentation>Defines the structure of a ManagementPack version.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="[0-9]{1,10}\.[0-9]{1,10}\.[0-9]{1,10}\.[0-9]{1,10}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ManagementPackKeyTokenType">
+    <xsd:annotation>
+      <xsd:documentation>Defines the structure of a ManagementPack key token.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:minLength value="16"/>
+      <xsd:pattern value="[0-9a-fA-F]{16}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ManagementPackAliasType">
+    <xsd:annotation>
+      <xsd:documentation>Defines the structure of a ManagementPack alias, which needs to be unique in the criteria.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:ID">
+      <xsd:minLength value="1"/>
+      <xsd:maxLength value="256"/>
+      <xsd:pattern value="[A-Za-z0-9_\.]+"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="UniqueIdentifierType">
+    <xsd:annotation>
+      <xsd:documentation>Defines the structure of a Guid.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:maxLength value="38"/>
+      <xsd:minLength value="36"/>
+      <xsd:pattern value="\{{0,1}[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}{0,1}"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="PathReferenceType">
+    <xsd:annotation>
+      <xsd:documentation>A path reference ending at a class.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="\$Target((/Path\[Relationship\=(&quot;|\&amp;quot\;|'|\&amp;apos\;)((([A-Za-z0-9_\.]+\!)?[A-Za-z0-9_\.]+)|(\{{0,1}[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}{0,1}))(&quot;|\&amp;quot\;|'|\&amp;apos\;)( SeedRole=(&quot;|\&amp;quot\;|'|\&amp;apos\;)(Source|Target)(&quot;|\&amp;quot\;|'|\&amp;apos\;))?( TypeConstraint=(&quot;|\&amp;quot\;|'|\&amp;apos\;)((([A-Za-z0-9_\.]+\!)?[A-Za-z0-9_\.]+)|(\{{0,1}[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}{0,1}))(&quot;|\&amp;quot\;|'|\&amp;apos\;))?])+)\$"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ClassReferenceType">
+    <xsd:annotation>
+      <xsd:documentation>A reference to a class.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:pattern value="((\$MPElement\[(Name\=(&quot;|\&amp;quot\;|'|\&amp;apos\;)(([A-Za-z0-9_\.]+\!)?[A-Za-z0-9_\.]+)(&quot;|\&amp;quot\;|'|\&amp;apos\;))\]\$)|(\{{0,1}[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}{0,1}))"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="BasicExpressionType">
+    <xsd:choice>
+      <xsd:element name="SimpleExpression" type="SimpleCriteriaType"/>
+      <xsd:element name="UnaryExpression" type="UnaryCriteriaType"/>
+      <xsd:element name="RegExExpression" type="RegExCriteriaType"/>
+      <xsd:element name="Contains" type="ContainsCriteriaType"/>
+      <xsd:element name="NotContains" type="NotContainsCriteriaType"/>
+      <xsd:element name="Contained" type="ContainedCriteriaType"/>
+      <xsd:element name="NotContained" type="NotContainedCriteriaType"/>
+      <xsd:element name="And" type="AndType"/>
+      <xsd:element name="Or" type="OrType"/>
+      <xsd:element name="In" type="InType"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="ExpressionType">
+    <xsd:annotation>
+      <xsd:documentation>Root type for an expression.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Reference" type="ManagementPackReferenceType" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>The management pack references to use within this criteria.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="Expression" type="BasicExpressionType" minOccurs="1" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="ExpressionBase">
+    <xsd:annotation>
+      <xsd:documentation>The base type for all expressions.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:complexType>
+  <xsd:complexType name="InTypeValuesType">
+    <xsd:annotation>
+      <xsd:documentation>The values collection within an In clause.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="Value" type="UniqueIdentifierType" minOccurs="1" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="InType">
+    <xsd:annotation>
+      <xsd:documentation>Represents an IN clause.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ExpressionBase">
+        <xsd:sequence>
+          <xsd:choice>
+            <xsd:element name="Property" type="ValueExpressionPropertyPathValueType"/>
+            <xsd:element name="GenericProperty" type="ValueExpressionGenericPropertyType"/>
+          </xsd:choice>
+          <xsd:element name="Values" type="InTypeValuesType" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="OrType">
+    <xsd:complexContent>
+      <xsd:extension base="ExpressionBase">
+        <xsd:annotation>
+          <xsd:documentation>Represents an OR expression.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="Expression" type="BasicExpressionType" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="AndType">
+    <xsd:complexContent>
+      <xsd:extension base="ExpressionBase">
+        <xsd:annotation>
+          <xsd:documentation>Represents an AND expression.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="Expression" type="BasicExpressionType" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="SimpleCriteriaType">
+    <xsd:complexContent>
+      <xsd:extension base="ExpressionBase">
+        <xsd:sequence>
+          <xsd:annotation>
+            <xsd:documentation>Expression comparing two values.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:element name="ValueExpressionLeft" type="ValueExpressionType"/>
+          <xsd:element name="Operator" type="CriteriaOperatorType"/>
+          <xsd:element name="ValueExpressionRight" type="ValueExpressionType"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="UnaryCriteriaType">
+    <xsd:complexContent>
+      <xsd:extension base="ExpressionBase">
+        <xsd:sequence>
+          <xsd:annotation>
+            <xsd:documentation>Expression with value and unary operator.</xsd:documentation>
+          </xsd:annotation>
+          <xsd:element name="ValueExpression" type="ValueExpressionType"/>
+          <xsd:element name="Operator" type="UnaryOperatorType"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="RegExCriteriaType">
+    <xsd:complexContent>
+      <xsd:extension base="ExpressionBase">
+        <xsd:annotation>
+          <xsd:documentation>Expression with RegEx operators.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:element name="ValueExpression" type="ValueExpressionType"/>
+          <xsd:element name="Operator" type="RegExOperatorType"/>
+          <xsd:element name="Pattern" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="ContainmentBaseCriteriaType">
+    <xsd:complexContent>
+      <xsd:extension base="ExpressionBase">
+        <xsd:annotation>
+          <xsd:documentation>Represents Containment base expression.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+          <xsd:sequence>
+            <xsd:element name="Path" type="PathReferenceType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="Class" type="ClassReferenceType"/>
+          </xsd:sequence>
+          <xsd:element name="Expression" type="BasicExpressionType" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="ContainsCriteriaType">
+    <xsd:complexContent>
+      <xsd:extension base="ContainmentBaseCriteriaType">
+        <xsd:annotation>
+          <xsd:documentation>Represents Contains expression.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="NotContainsCriteriaType">
+    <xsd:complexContent>
+      <xsd:extension base="ContainsCriteriaType">
+        <xsd:annotation>
+          <xsd:documentation>Represents Not Contains expression.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="ContainedCriteriaType">
+    <xsd:complexContent>
+      <xsd:extension base="ContainmentBaseCriteriaType">
+        <xsd:annotation>
+          <xsd:documentation>Represents Contained expression.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="NotContainedCriteriaType">
+    <xsd:complexContent>
+      <xsd:extension base="ContainedCriteriaType">
+        <xsd:annotation>
+          <xsd:documentation>Represents Not Contained expression.</xsd:documentation>
+        </xsd:annotation>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <xsd:complexType name="ValueExpressionValueBaseType">
+    <xsd:annotation>
+      <xsd:documentation>Base types for valid values of a ValueExpressionType.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string" />
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ValueExpressionValueType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string" />
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ValueExpressionPropertyPathValueType">
+    <xsd:annotation>
+      <xsd:documentation>A path reference to a property.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:simpleContent>
+      <xsd:restriction base="ValueExpressionValueBaseType">
+        <xsd:pattern value="\$Target/((Path\[Relationship\=(&quot;|\&amp;quot\;|'|\&amp;apos\;)((([A-Za-z0-9_\.]+\!)?[A-Za-z0-9_\.]+)|(\{{0,1}[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}{0,1}))(&quot;|\&amp;quot\;|'|\&amp;apos\;)( SeedRole=(&quot;|\&amp;quot\;|'|\&amp;apos\;)(Source|Target)(&quot;|\&amp;quot\;|'|\&amp;apos\;))?( TypeConstraint=(&quot;|\&amp;quot\;|'|\&amp;apos\;)((([A-Za-z0-9_\.]+\!)?[A-Za-z0-9_\.]+)|(\{{0,1}[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}{0,1}))(&quot;|\&amp;quot\;|'|\&amp;apos\;))?]/)*)(Property\[Type\=(&quot;|\&amp;quot\;|'|\&amp;apos\;)(([A-Za-z0-9_\.]+\!)?[A-Za-z0-9_\.]+)(&quot;|\&amp;quot\;|'|\&amp;apos\;)\]/([A-Za-z0-9_\.]+)|Property\[Type\=(&quot;|\&amp;quot\;|'|\&amp;apos\;)(\{{0,1}[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}{0,1})(&quot;|\&amp;quot\;|'|\&amp;apos\;)\]/(\{{0,1}[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}{0,1}))\$"/>
+      </xsd:restriction>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ValueExpressionGenericPropertyType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute name="Path" type="PathReferenceType" use="optional" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+  <xsd:complexType name="ValueExpressionType">
+    <xsd:annotation>
+      <xsd:documentation>Represents a single value with a SimpleCriteriaType.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice>
+      <xsd:element name="GenericProperty" type="ValueExpressionGenericPropertyType"/>
+      <xsd:element name="Property" type="ValueExpressionPropertyPathValueType"/>
+      <xsd:element name="Value" type="ValueExpressionValueType"/>
+    </xsd:choice>
+  </xsd:complexType>
+  <xsd:complexType name="ManagementPackReferenceType">
+    <xsd:annotation>
+      <xsd:documentation>A reference to a management pack for alias resolution within criteria.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:attribute name="Id" use="required" type="ManagementPackNameType" />
+    <xsd:attribute name="Alias" use="required" type="ManagementPackAliasType" />
+    <xsd:attribute name="Version" use="required" type="ManagementPackVersionType" />
+    <xsd:attribute name="PublicKeyToken" use="optional" type="ManagementPackKeyTokenType" />
+  </xsd:complexType>
+  <xsd:element name="Criteria" type="ExpressionType">
+    <xsd:annotation>
+      <xsd:documentation>The expression.</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:schema>
+

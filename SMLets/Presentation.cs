@@ -12,13 +12,14 @@ using Microsoft.EnterpriseManagement.Common;
 using Microsoft.EnterpriseManagement.Configuration;
 using Microsoft.EnterpriseManagement.Configuration.IO;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace SMLets
 {
     public class PresentationCmdletBase : SMCmdletBase
     {
         private string[] _name = { "*" };
-        [Parameter(Position = 0)]
+        [Parameter(Position = 0, ParameterSetName = "Name")]
         public string[] Name
         {
             get { return _name; }
@@ -504,26 +505,40 @@ namespace SMLets
         }
     }
 
-    [Cmdlet(VerbsCommon.Get, "SCSMView")]
-    public class GetSCSMViewCommand : PresentationCmdletBase
+    [Cmdlet(VerbsCommon.Get, "SCSMView", DefaultParameterSetName = "Name")]
+    public class GetSCSMViewCommand : SMCmdletBase
     {
+        [Parameter(Position = 0, ParameterSetName = "Name")]
+        public string[] Name { get; set; }
+
+        [Parameter(Position = 0, ParameterSetName = "Id")]
+        public Guid[] Id { get; set; }
+
         private IList<ManagementPackView> list;
+        Regex r = null;
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
-            list = _mg.Presentation.GetViews();
         }
         protected override void ProcessRecord()
         {
-            foreach (string p in Name)
+
+            foreach (ManagementPackView v in _mg.Presentation.GetViews().Where(t => (Id == null || (Id != null && Id.Contains(t.Id)))))
             {
-                WildcardPattern pattern = new WildcardPattern(p, WildcardOptions.CultureInvariant|WildcardOptions.IgnoreCase);
-                foreach (ManagementPackView v in list)
+                if (Name != null)
                 {
-                    if (pattern.IsMatch(v.Name))
+                    foreach (String n in Name)
                     {
-                        WriteObject(v);
+                        r = new Regex(n, RegexOptions.IgnoreCase);
+                        if (r.Match(v.Name).Success || r.Match($"{v.DisplayName}").Success)
+                        {
+                            WriteObject(v);
+                        }
                     }
+                }
+                else
+                {
+                    WriteObject(v);
                 }
             }
         }
@@ -710,6 +725,7 @@ namespace SMLets
         protected override void ProcessRecord()
         {
             base.ProcessRecord();
+            
             foreach (string n in Name)
             {
                 WildcardPattern wp = new WildcardPattern(n, WildcardOptions.IgnoreCase | WildcardOptions.CultureInvariant);
@@ -958,28 +974,41 @@ namespace SMLets
         }
     }
 
-    [Cmdlet(VerbsCommon.Get, "SCSMConsoleTask")]
-    public class GetSCSMConsoleTaskCommand : PresentationCmdletBase
+    [Cmdlet(VerbsCommon.Get, "SCSMConsoleTask", DefaultParameterSetName = "Name")]
+    public class GetSCSMConsoleTaskCommand : SMCmdletBase
     {
+        [Parameter(Position = 0, ParameterSetName = "Name")]
+        public string[] Name { get; set; }
+
+        [Parameter(Position = 0, ParameterSetName = "Id")]
+        public Guid[] Id { get; set; }
+
         private IList<ManagementPackConsoleTask> consoleTaskList;
+        Regex r = null;
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
-            consoleTaskList = _mg.TaskConfiguration.GetConsoleTasks();
         }
         protected override void ProcessRecord()
         {
             base.ProcessRecord();
-            foreach (ManagementPackConsoleTask task in consoleTaskList)
+
+            foreach (ManagementPackConsoleTask task in _mg.TaskConfiguration.GetConsoleTasks().Where(t => (Id == null || (Id != null && Id.Contains(t.Id)))))
             {
-                foreach (string n in Name)
+                if (Name != null)
                 {
-                    WildcardPattern wp = new WildcardPattern(n, WildcardOptions.CultureInvariant | WildcardOptions.IgnoreCase);
-                    if (wp.IsMatch(task.Name))
+                    foreach (String n in Name)
                     {
-                        WriteObject(task);
-                        break;
+                        r = new Regex(n, RegexOptions.IgnoreCase);
+                        if (r.Match(task.Name).Success || r.Match($"{task.DisplayName}").Success)
+                        {
+                            WriteObject(task);
+                        }
                     }
+                }
+                else
+                {
+                    WriteObject(task);
                 }
             }
         }

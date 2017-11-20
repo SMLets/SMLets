@@ -3,22 +3,8 @@ if ( ! (get-command candle.exe -ea silentlycontinue))
 {
     $env:path += ';c:\Program Files (x86)\WiX Toolset v3.10\bin\'
 }
-# we need to load the module assembly (but not the module) so we can determine
-# whether we're bulding for SP1 or 2012
-# we've got to load Microsoft.EnterpriseManagement.Core so we
-# can build an EnterpriseManagementGroup
-[reflection.assembly]::LoadWithPartialName("Microsoft.EnterpriseManagement.Core")| out-null
-$emg = new-object Microsoft.EnterpriseManagement.EnterpriseManagementGroup $scsmserver
-[byte[]]$bytes = Get-Content ../SMLets.Module.dll -encoding byte -readcount 0
-$asm = [reflection.assembly]::Load($bytes)
-if ( (new-object smlets.smletsversioninfo $emg).TargetProduct -match "SP1" )
-{
-    $outputPrefix = "SMLets.SP1"
-}
-else
-{
-    $outputPrefix = "SMLets"
-}
+
+$outputPrefix = "SMLets"
 
 function new-smletsmsi
 {
@@ -46,6 +32,7 @@ function new-smletsmsi
     if ( test-path fogfile.txt ) { rm fogfile.txt }
     if ( test-path $WIXNAME ) { rm $WIXNAME }
     if ( test-path $PDBNAME ) { rm $PDBNAME }
+	Write-Host "new MSE Created: $MSINAME"
 }
 
 Write-Progress -Activity "Building MSI" -status "Creating '$outputPrefix' x64 version"

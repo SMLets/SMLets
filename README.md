@@ -1,9 +1,30 @@
 # SCSM PowerShell Cmdlets 
 
 
-
 ### Project Description
-This project provides cmdlets for System Center Service Manager /2012/2012 SP1/2012 R2/2016 which can be used to automate common tasks.
+This project provides cmdlets for System Center Service Manager 2012/2012 SP1/2012 R2/2016 which can be used to automate common tasks.
+
+### Versions
+Version of the SMlets builds on follwing pattern:
+
+<b>major.minor.SMVersion.0</b>
+
+where:
+ - <b>major</b> and <b>minor</b> are version of the SMLets itself
+ - <b>SMVersion</b> is version of the Service Manager for which this SMLets was compiled
+
+
+#### 2012 vs 2016 version
+The only different between version for 2012 and 2016 is target framework: 3.5 for SCSM 2012 and 4.5.1 for SCSM 2016
+
+### Installation
+SMLets cmdlets can be installed with two different ways:
+1. From MSI binary (see the Release tab under GitHub). In this case it will be installed globally for the server.
+2. From [PowerShell Gallery](https://www.powershellgallery.com/packages/SMLets). In this case cmdlet will be installed for current user only.
+
+To isntall exact version from PowerShell Gallery please use <i>-RequiredVersion</i> parameter:
+
+`Install-Module -Name SMLets -RequiredVersion 0.7.2012.0`
 
 Current commands:
 ```

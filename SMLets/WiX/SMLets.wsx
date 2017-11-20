@@ -1,0 +1,92 @@
+<?xml version='1.0'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
+  <Product Id='434f2dfc-a6fb-4702-bcd6-17b347b3cec6' Name='Service Manager SMLets Module v.0.7' Language='1033'
+           Version='1.0.1.0' Manufacturer='James W. Truher' UpgradeCode='7cf051aa-2dc8-40a3-ad46-5fea16a7cce1' >
+    <?if $(env.SMLETS64)=1 ?>
+    <Package Description='This is the SMLets Module for Service Manager 2012' Platform="x64"
+             Comments='This is the SMLets Module for Service Manager 2012'
+             Manufacturer='James W. Truher' InstallerVersion='300' Compressed='yes' />
+    <?else ?>
+    <Package Description='This is the SMLets Module for Service Manager 2012'
+             Comments='This is the SMLets Module for Service Manager 2012'
+             Manufacturer='James W. Truher' InstallerVersion='300' Compressed='yes' />
+    <?endif?>
+    <UIRef Id='WixUI_FeatureTree' />
+    <WixVariable Id="WixUILicenseRtf" Value="smlets-license.rtf" />
+    <Media Id='1' Cabinet='product.cab' EmbedCab='yes' />
+    <?if $(env.SMLETS64)=1?>
+    <?define TargetSystemFolder="System64Folder"?>
+    <?else?>
+    <?define TargetSystemFolder="SystemFolder"?>
+    <?endif?>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="$(var.TargetSystemFolder)" >
+        <Directory Id='WindowsPowerShell' Name='WindowsPowerShell'>
+          <Directory Id='PSHVer' Name='v1.0'>
+            <Directory Id='PSHModules' Name='Modules'>
+          <Directory Id='MyDir' Name='SMLets'>
+            <Component Id='MainModule' Guid='fd3061e1-e95e-4ef0-b982-0d33aedb26b3'>
+              <!--<Environment Id="PsModulePath"
+                   Action="set"
+                   Name="PSModulePath"
+                   Part="last"
+                   Permanent="no"
+                   System="yes"
+                   Value="[$(var.ProgramFilesFolder)]Common Files" />-->
+              <File Id='about_SMLets.help.txt' Name='about_SMLets.help.txt' DiskId='1' Source='../about_SMLets.help.txt' />
+              <File Id='ReadMe.txt' Name='ReadMe.txt' DiskId='1' Source='../ReadMe.txt' />
+              <File Id='SMLets.Module.dll' Name='SMLets.Module.dll' DiskId='1' Source='../SMLets.Module.dll' />
+              <File Id='SMLets.Module.dll_Help.xml' Name='SMLets.Module.dll-Help.xml' DiskId='1' Source='../SMLets.Module.dll-Help.xml' />
+              <File Id='SMLets.Module.pdb' Name='SMLets.Module.pdb' DiskId='1' Source='../SMLets.Module.pdb' />
+              <File Id='SMLets.psd1' Name='SMLets.psd1' DiskId='1' Source='../SMLets.psd1' />
+              <File Id='SMLets.psm1' Name='SMLets.psm1' DiskId='1' Source='../SMLets.psm1' />
+              <File Id='SMLets.Types.ps1xml' Name='SMLets.Types.ps1xml' DiskId='1' Source='../SMLets.Types.ps1xml' />
+              <File Id='SMLets.Format.ps1xml' Name='SMLets.Format.ps1xml' DiskId='1' Source='../SMLets.Format.ps1xml' />
+            </Component>
+
+            <Directory Id='Scripts' Name='Scripts'>
+              <Component Id='ScriptsDir' Guid='fe656927-93fa-410d-a8cf-ce251871fcaf'>
+                <File Id='Scripts_display_richtext.ps1' Name='display-richtext.ps1' DiskId='1' Source='../Scripts/display-richtext.ps1' />
+                <File Id='Scripts_Export_BundleContents.ps1' Name='Export-BundleContents.ps1' DiskId='1' Source='../Scripts/Export-BundleContents.ps1' />
+                <File Id='Scripts_Export_KnowledgeArticle.ps1' Name='Export-KnowledgeArticle.ps1' DiskId='1' Source='../Scripts/Export-KnowledgeArticle.ps1' />
+                <File Id='Scripts_Get_EnumStack.ps1' Name='Get-EnumStack.ps1' DiskId='1' Source='../Scripts/Get-EnumStack.ps1' />
+                <File Id='Scripts_get_lorem.ps1' Name='get-lorem.ps1' DiskId='1' Source='../Scripts/get-lorem.ps1' />
+                <File Id='Scripts_get_mpbinfo.ps1' Name='get-mpbinfo.ps1' DiskId='1' Source='../Scripts/get-mpbinfo.ps1' />
+                <File Id='Scripts_get_scsmdeleteditem.ps1' Name='get-scsmdeleteditem.ps1' DiskId='1' Source='../Scripts/get-scsmdeleteditem.ps1' />
+                <File Id='Scripts_get_SCSMProjectionComponent.ps1' Name='get-SCSMProjectionComponent.ps1' DiskId='1' Source='../Scripts/get-SCSMProjectionComponent.ps1' />
+                <File Id='Scripts_get_SCSMSubscription.ps1' Name='get-SCSMSubscription.ps1' DiskId='1' Source='../Scripts/get-SCSMSubscription.ps1' />
+                <File Id='Scripts_get_scsmuser.ps1' Name='get-scsmuser.ps1' DiskId='1' Source='../Scripts/get-scsmuser.ps1' />
+                <File Id='Scripts_Get_SCSMWorkflow.ps1' Name='Get-SCSMWorkflow.ps1' DiskId='1' Source='../Scripts/Get-SCSMWorkflow.ps1' />
+                <File Id='Scripts_get_singlepropertycriteria.ps1' Name='get-singlepropertycriteria.ps1' DiskId='1' Source='../Scripts/get-singlepropertycriteria.ps1' />
+                <File Id='Scripts_Get_SMConfig.ps1' Name='Get-SMConfig.ps1' DiskId='1' Source='../Scripts/Get-SMConfig.ps1' />
+                <File Id='Scripts_get_smproperty.ps1' Name='get-smproperty.ps1' DiskId='1' Source='../Scripts/get-smproperty.ps1' />
+                <File Id='Scripts_get_smtask.ps1' Name='get-smtask.ps1' DiskId='1' Source='../Scripts/get-smtask.ps1' />
+                <File Id='Scripts_get_smtaskresult.ps1' Name='get-smtaskresult.ps1' DiskId='1' Source='../Scripts/get-smtaskresult.ps1' />
+                <File Id='Scripts_get_taskparameters.ps1' Name='get-taskparameters.ps1' DiskId='1' Source='../Scripts/get-taskparameters.ps1' />
+                <File Id='Scripts_new_criteria.ps1' Name='new-criteria.ps1' DiskId='1' Source='../Scripts/new-criteria.ps1' />
+                <File Id='Scripts_New_MPBFile.ps1' Name='New-MPBFile.ps1' DiskId='1' Source='../Scripts/New-MPBFile.ps1' />
+                <File Id='Scripts_objectcriteria.ps1' Name='objectcriteria.ps1' DiskId='1' Source='../Scripts/objectcriteria.ps1' />
+                <File Id='Scripts_Restore_SCSMDeletedItem.ps1' Name='Restore-SCSMDeletedItem.ps1' DiskId='1' Source='../Scripts/Restore-SCSMDeletedItem.ps1' />
+                <File Id='Scripts_Set_IncidentUser.ps1' Name='Set-IncidentUser.ps1' DiskId='1' Source='../Scripts/Set-IncidentUser.ps1' />
+                <File Id='Scripts_Set_LastModified.ps1' Name='Set-LastModified.ps1' DiskId='1' Source='../Scripts/Set-LastModified.ps1' />
+                <File Id='Scripts_test_relationshipobject.ps1' Name='test-relationshipobject.ps1' DiskId='1' Source='../Scripts/test-relationshipobject.ps1' />
+                <File Id='Scripts_Test_SCManagementPack.ps1' Name='Test-SCManagementPack.ps1' DiskId='1' Source='../Scripts/Test-SCManagementPack.ps1' />
+                <File Id='Scripts_Update_MPVersion_ps1' Name='Update-MPVersion.ps1' DiskId='1' Source='../Scripts/Update-MPVersion.ps1' />
+                <File Id='Scripts_get_ROQuestions_ps1' Name='get-ROQuestions.ps1' DiskId='1' Source='../Scripts/get-ROQuestions.ps1' />
+                <File Id='Scripts_test_SupportGroupConfig_ps1' Name='test-SupportGroupConfig.ps1' DiskId='1' Source='../Scripts/test-SupportGroupConfig.ps1' />
+              </Component>
+            </Directory>
+          </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+    <Feature Id='base' Title='Service Manager SMLets base module' Level='1' Display='collapse'>
+      <ComponentRef Id='MainModule' />
+      <ComponentRef Id='ScriptsDir' />
+    </Feature>
+  </Product>
+</Wix>
+

@@ -1,18 +1,16 @@
-using System;
-using System.IO;
-using System.Xml;
-using System.Text;
-using System.Globalization;
-using System.Reflection;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Management.Automation;
 using Microsoft.EnterpriseManagement;
 using Microsoft.EnterpriseManagement.Common;
-using Microsoft.EnterpriseManagement.Security;
 using Microsoft.EnterpriseManagement.Configuration;
-using Microsoft.EnterpriseManagement.Configuration.IO;
+using Microsoft.EnterpriseManagement.Security;
+using SMLets.Model.Security;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Management.Automation;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace SMLets
@@ -22,17 +20,13 @@ namespace SMLets
     [Cmdlet(VerbsCommon.New, "SCSMUserRole")]
     public class NewSCSMUserRoleCommand : SMCmdletBase
     {
-        /* TODO
-         * Add support for passing in ADUser objects
-         * Add support for passing in a collection of domain\username objects
-        */
-
         # region Private Properties
         private string _displayname;
         private string _description;
         private Profile _profile;
-        private EnterpriseManagementObject[] _objects;
+        private ManagementPackElement[] _objects;
         private EnterpriseManagementObject[] _scsmusers;
+        private String[] _users;
         private ManagementPackTemplate[] _templates;
         private ManagementPackClass[] _classes;
         private ManagementPackView[] _views;
@@ -69,7 +63,7 @@ namespace SMLets
         }
 
         [Parameter(ValueFromPipeline = false, Mandatory = false)]
-        public EnterpriseManagementObject[] Objects
+        public ManagementPackElement[] Objects
         {
             get { return _objects; }
             set { _objects = value; }
@@ -108,6 +102,13 @@ namespace SMLets
         {
             get { return _scsmusers; }
             set { _scsmusers = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false, Mandatory = false)]
+        public String[] Users
+        {
+            get { return _users; }
+            set { _users = value; }
         }
 
         [Parameter(ValueFromPipeline = false, Mandatory = false)]
@@ -158,10 +159,12 @@ namespace SMLets
             base.ProcessRecord();
 
             //Create a new user role and set its properties based on what the user passed in
-            UserRole ur = new UserRole();
-            ur.DisplayName = _displayname;
-            ur.Profile = _profile;
-            ur.Name = SMHelpers.MakeMPElementSafeUniqueIdentifier("UserRole");
+            UserRole ur = new UserRole()
+            {
+                DisplayName = _displayname,
+                Profile = _profile,
+                Name = SMHelpers.MakeMPElementSafeUniqueIdentifier("UserRole")
+            };
             if (_description != null) { ur.Description = _description; };
 
             ManagementPackClass classUser = SMHelpers.GetManagementPackClass(ClassTypes.Microsoft_AD_User, SMHelpers.GetManagementPack(ManagementPacks.Microsoft_Windows_Library, _mg), _mg);
@@ -175,12 +178,20 @@ namespace SMLets
                 }
             }
 
+            if (_users != null)
+            {
+                foreach (String user in _users)
+                {
+                    ur.Users.Add(user);
+                }
+            }
+
             //Set the security scopes
             if (_alltemplates) { ur.Scope.Templates.Add(UserRoleScope.RootTemplateId); }
             else { if (_templates != null) { foreach (ManagementPackTemplate template in _templates) { ur.Scope.Templates.Add(template.Id); } } }
 
             if (_allobjects) { ur.Scope.Objects.Add(UserRoleScope.RootObjectId); }
-            else { if (_objects != null) { foreach (EnterpriseManagementObject emo in _objects) { ur.Scope.Objects.Add(emo.Id); } } }
+            else { if (_objects != null) { foreach (ManagementPackElement emo in _objects) { ur.Scope.Objects.Add(emo.Id); } } }
 
             if (_allclasses) { ur.Scope.Classes.Add(UserRoleScope.RootClassId); }
             else { if (_classes != null) { foreach (ManagementPackClass mpclass in _classes) { ur.Scope.Classes.Add(mpclass.Id); } } }
@@ -188,8 +199,8 @@ namespace SMLets
             if (_allconsoletasks) { ur.Scope.ConsoleTasks.Add(UserRoleScope.RootConsoleTaskId); }
             else { if (_consoletasks != null) { foreach (ManagementPackConsoleTask consoletask in _consoletasks) { ur.Scope.ConsoleTasks.Add(consoletask.Id); } } }
 
-            if (_allviews) 
-            { 
+            if (_allviews)
+            {
                 Pair<Guid, Boolean> pairView = new Pair<Guid, Boolean>(UserRoleScope.RootViewId, false);
                 ur.Scope.Views.Add(pairView);
             }
@@ -210,57 +221,425 @@ namespace SMLets
             _mg.Security.InsertUserRole(ur);
         }
     }
-    
-    [Cmdlet(VerbsCommon.Get,"SCSMUserRole",DefaultParameterSetName="name")]
-    public class GetSCSMUserRole : SMCmdletBase
+
+    [Cmdlet(VerbsCommon.Set, "SCSMUserRole", DefaultParameterSetName = "name", SupportsShouldProcess = true, ConfirmImpact = ConfirmImpact.Medium)]
+    public class SetSCSMUserRoleCommand : SMCmdletBase
     {
-        private string _name = ".*";
-        [Parameter(Position=0,ParameterSetName="name")]
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-        private Guid _id = Guid.Empty;
-        [Parameter(Position=0,ParameterSetName="id")]
-        public Guid Id
+        # region Private Properties
+        private string _displayname;
+        private string _description;
+        private ManagementPackElement[] _objects;
+        private EnterpriseManagementObject[] _scsmusers;
+        private String[] _users;
+        private ManagementPackTemplate[] _templates;
+        private ManagementPackClass[] _classes;
+        private ManagementPackView[] _views;
+        private ManagementPackConsoleTask[] _consoletasks;
+        private Boolean _alltemplates;
+        private Boolean _allconsoletasks;
+        private Boolean _allviews;
+        private Boolean _allclasses;
+        private Boolean _allobjects;
+        private Guid[] _id;
+        private string[] _name;
+        private UserRole[] _userroles;
+
+        # endregion Private Properties
+
+        #region Parameters
+
+        [Parameter(Position = 0, ParameterSetName = "id", ValueFromPipelineByPropertyName = true)]
+        public Guid[] Id
         {
             get { return _id; }
             set { _id = value; }
         }
 
-        Regex r = null;
+        [Parameter(Position = 0, ParameterSetName = "name")]
+        public String[] Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false)]
+        public String DisplayName
+        {
+            get { return _displayname; }
+            set { _displayname = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false)]
+        public String Description
+        {
+            get { return _description; }
+            set { _description = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false)]
+        public ManagementPackElement[] Objects
+        {
+            get { return _objects; }
+            set { _objects = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false)]
+        public ManagementPackTemplate[] Templates
+        {
+            get { return _templates; }
+            set { _templates = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false)]
+        public ManagementPackClass[] Classes
+        {
+            get { return _classes; }
+            set { _classes = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false)]
+        public ManagementPackView[] Views
+        {
+            get { return _views; }
+            set { _views = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false)]
+        public ManagementPackConsoleTask[] ConsoleTasks
+        {
+            get { return _consoletasks; }
+            set { _consoletasks = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false, Mandatory = false)]
+        public EnterpriseManagementObject[] SCSMUsers
+        {
+            get { return _scsmusers; }
+            set { _scsmusers = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false, Mandatory = false)]
+        public String[] Users
+        {
+            get { return _users; }
+            set { _users = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false)]
+        public SwitchParameter AllTemplates
+        {
+            get { return _alltemplates; }
+            set { _alltemplates = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false)]
+        public SwitchParameter AllObjects
+        {
+            get { return _allobjects; }
+            set { _allobjects = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false)]
+        public SwitchParameter AllClasses
+        {
+            get { return _allclasses; }
+            set { _allclasses = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false)]
+        public SwitchParameter AllViews
+        {
+            get { return _allviews; }
+            set { _allviews = value; }
+        }
+
+        [Parameter(ValueFromPipeline = false)]
+        public SwitchParameter AllConsoleTasks
+        {
+            get { return _allconsoletasks; }
+            set { _allconsoletasks = value; }
+        }
+
+        #endregion Parameters
+
+        protected override void BeginProcessing()
+        {
+            //This will set the _mg which is the EnterpriseManagementGroup object for the connection to the server
+            base.BeginProcessing();
+        }
+
+        protected override void ProcessRecord()
+        {
+            base.ProcessRecord();
+
+            //Create a new user role and set its properties based on what the user passed in
+            if (_userroles == null)
+            {
+                PowerShell powerShell = PowerShell.Create();
+
+                powerShell.AddCommand("Import-Module")
+                    .AddParameter("Assembly",
+                          System.Reflection.Assembly.GetExecutingAssembly());
+                powerShell.Invoke();
+                powerShell.Commands.Clear();
+
+                PSVariable DefaultComputer = SessionState.PSVariable.Get("SMDefaultComputer");
+                if (DefaultComputer != null)
+                {
+                    powerShell.AddScript(string.Format("$SMDefaultComputer = '{0}';", DefaultComputer.Value));
+                    powerShell.Invoke();
+                    powerShell.Commands.Clear();
+                }
+
+                powerShell.AddCommand("Get-SCSMUserRole");
+
+                if (_id != null)
+                {
+                    powerShell.AddParameter("Id", _id);
+                    _userroles = powerShell.Invoke<UserRole>().ToArray();
+                }
+                if (_name != null)
+                {
+                    powerShell.AddParameter("Name", _name);
+                    _userroles = powerShell.Invoke<UserRole>().ToArray();
+                }
+            }
+            foreach (UserRole ur in _userroles)
+            {
+                if (!ur.IsSystem)
+                {
+                    if (ShouldProcess(ur.DisplayName))
+                    {
+                        if (DisplayName != null)
+                        {
+                            ur.DisplayName = _displayname;
+                        }
+
+                        if (_description != null) { ur.Description = _description; };
+
+                        ManagementPackClass classUser = SMHelpers.GetManagementPackClass(ClassTypes.Microsoft_AD_User, SMHelpers.GetManagementPack(ManagementPacks.Microsoft_Windows_Library, _mg), _mg);
+
+                        //Add the users
+                        if (_scsmusers != null)
+                        {
+                            foreach (EnterpriseManagementObject emo in _scsmusers)
+                            {
+                                ur.Users.Add(emo[classUser, ClassProperties.System_Domain_User__Domain] + "\\" + emo[classUser, ClassProperties.System_Domain_User__UserName]);
+                            }
+                        }
+
+                        if (_users != null)
+                        {
+                            foreach (String user in _users)
+                            {
+                                ur.Users.Add(user);
+                            }
+                        }
+
+                        //Set the security scopes
+                        if (_alltemplates)
+                        {
+                            if (!ur.Scope.Templates.Contains(UserRoleScope.RootTemplateId)) { ur.Scope.Templates.Add(UserRoleScope.RootTemplateId); }
+                        }
+                        else
+                        {
+                            if (_templates != null)
+                            {
+                                foreach (ManagementPackTemplate template in _templates)
+                                {
+                                    if (!ur.Scope.Templates.Contains(template.Id)) { ur.Scope.Templates.Add(template.Id); }
+                                }
+                            }
+                        }
+
+                        if (_allobjects)
+                        {
+                            if (!ur.Scope.Objects.Contains(UserRoleScope.RootObjectId)) { ur.Scope.Objects.Add(UserRoleScope.RootObjectId); }
+                        }
+                        else
+                        {
+                            if (_objects != null)
+                            {
+                                foreach (ManagementPackElement emo in _objects)
+                                {
+                                    if (!ur.Scope.Objects.Contains(emo.Id)) { ur.Scope.Objects.Add(emo.Id); }
+                                }
+                            }
+                        }
+
+                        if (_allclasses)
+                        {
+                            if (!ur.Scope.Classes.Contains(UserRoleScope.RootClassId)) { ur.Scope.Classes.Add(UserRoleScope.RootClassId); }
+                        }
+                        else
+                        {
+                            if (_classes != null)
+                            {
+                                foreach (ManagementPackClass mpclass in _classes)
+                                {
+                                    if (!ur.Scope.Classes.Contains(mpclass.Id)) { ur.Scope.Classes.Add(mpclass.Id); }
+                                }
+                            }
+                        }
+
+                        if (_allconsoletasks)
+                        {
+                            if (!ur.Scope.ConsoleTasks.Contains(UserRoleScope.RootConsoleTaskId)) { ur.Scope.ConsoleTasks.Add(UserRoleScope.RootConsoleTaskId); }
+                        }
+                        else
+                        {
+                            if (_consoletasks != null)
+                            {
+                                foreach (ManagementPackConsoleTask consoletask in _consoletasks)
+                                {
+                                    if (!ur.Scope.ConsoleTasks.Contains(consoletask.Id)) { ur.Scope.ConsoleTasks.Add(consoletask.Id); }
+                                }
+                            }
+                        }
+
+                        if (_allviews)
+                        {
+                            Pair<Guid, Boolean> pairView = new Pair<Guid, Boolean>(UserRoleScope.RootViewId, false);
+                            if (!ur.Scope.Views.Contains(pairView))
+                            { ur.Scope.Views.Add(pairView); }
+                        }
+                        else
+                        {
+                            if (_views != null)
+                            {
+                                foreach (ManagementPackView view in _views)
+                                {
+                                    if (view != null)
+                                    {
+                                        Pair<Guid, Boolean> pairView = new Pair<Guid, Boolean>(view.Id, false);
+                                        if (!ur.Scope.Views.Contains(pairView))
+                                        { ur.Scope.Views.Add(pairView); }
+                                    }
+                                }
+                            }
+                        }
+                        ur.Update();
+                    }
+                }
+            }
+        }
+    }
+
+    [Cmdlet(VerbsCommon.Get, "SCSMUserRole", DefaultParameterSetName = "name")]
+    public class GetSCSMUserRole : SMCmdletBase
+    {
+
+
+        private string[] _name;
+        [Parameter(Position = 0, ParameterSetName = "name")]
+        public string[] Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+        private Guid[] _id;
+        [Parameter(Position = 0, ParameterSetName = "id")]
+        public Guid[] Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        private string[] _displayName;
+        [Parameter(Position = 0, ParameterSetName = "displayName")]
+        public string[] DisplayName
+        {
+            get { return _displayName; }
+            set { _displayName = value; }
+        }
+
+        private SwitchParameter _noAdapt;
+        [Parameter]
+        public SwitchParameter NoAdapt
+        {
+            get { return _noAdapt; }
+            set { _noAdapt = value; }
+        }
+
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
-            r = new Regex(Name, RegexOptions.IgnoreCase);
         }
         protected override void ProcessRecord()
         {
-            if ( Id != Guid.Empty )
+            if (this.Id != null && this.Id.Length > 0)
             {
-                return;
-            }
-            foreach(UserRole role in _mg.Security.GetUserRoles())
-            {
-                if ( r.Match(role.Name).Success || r.Match(role.DisplayName).Success)
+                foreach (var id in this.Id)
                 {
-                    WriteObject(role);
+                    var role = _mg.Security.GetUserRole(id);
+                    WriteRole(role);
+                }
+            }
+            else
+            {
+                var list = _mg.Security.GetUserRoles();
+                if (Name != null && Name.Length > 0)
+                {
+                    foreach (UserRole role in list)
+                    {
+                        foreach (String n in Name)
+                        {
+                            Regex r = new Regex(n, RegexOptions.IgnoreCase);
+                            if (r.Match(role.Name).Success)
+                            {
+                                WriteRole(role);
+                            }
+                        }
+                    }
+                }
+                else if (DisplayName != null && DisplayName.Length > 0)
+                {
+                    foreach (UserRole role in list)
+                    {
+                        foreach (String n in DisplayName)
+                        {
+                            Regex r = new Regex(n, RegexOptions.IgnoreCase);
+                            if (r.Match(role.DisplayName).Success)
+                            {
+                                WriteRole(role);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (UserRole role in list)
+                    {
+                        WriteRole(role);
+                    }
                 }
             }
         }
 
-        protected override void EndProcessing()
+        private void WriteRole(UserRole role)
         {
-            if ( Id != Guid.Empty )
-            {
-                WriteObject(_mg.Security.GetUserRole(Id));
-            }
+            if (this.NoAdapt)
+                WriteObject(role);
+            else
+                WriteObject(AdaptUserRole(role));
+        }
+
+        public Role AdaptUserRole(UserRole role)
+        {
+            return new Role(role);
+        }
+
+        private EnterpriseManagementObject[] GetScopeItems(Guid type, UserRoleScope scope)
+        {
+            ManagementPackClass managementPackClass = _mg.EntityTypes.GetClass(type);
+            return (from q in _mg.EntityObjects.GetObjectReader<EnterpriseManagementObject>(managementPackClass, ObjectQueryOptions.Default)
+                    where scope.Objects.Contains(q.Id)
+                    select q).ToArray<EnterpriseManagementObject>();
         }
 
     }
 
-    [Cmdlet(VerbsCommon.Remove, "SCSMUserRole", SupportsShouldProcess=true)]
+    [Cmdlet(VerbsCommon.Remove, "SCSMUserRole", SupportsShouldProcess = true)]
     public class RemoveSCSMUserRole : SMCmdletBase
     {
         private UserRole[] _userroles;
@@ -312,16 +691,16 @@ namespace SMLets
 
     #region SCSMRunAsAccount cmdlets
 
-    [Cmdlet(VerbsCommon.Get,"SCSMRunAsAccount")]
+    [Cmdlet(VerbsCommon.Get, "SCSMRunAsAccount")]
     public class GetRunAsAccountsCommand : SMCmdletBase
     {
-        
+
         private ActionAccountSecureData aasd = null;
-        private IList<ManagementPackOverride> overrides =  null;
+        private IList<ManagementPackOverride> overrides = null;
         private Hashtable sdHash = null;
         private Regex r;
         private string _name = ".*";
-        [Parameter(Position=0)]
+        [Parameter(Position = 0)]
         public string Name
         {
             get { return _name; }
@@ -333,19 +712,19 @@ namespace SMLets
             r = new Regex(Name, RegexOptions.IgnoreCase);
             overrides = _mg.Overrides.GetOverrides();
             sdHash = new Hashtable();
-            foreach(SecureDataHealthServiceReference sr in _mg.Security.GetSecureDataHealthServiceReferences())
+            foreach (SecureDataHealthServiceReference sr in _mg.Security.GetSecureDataHealthServiceReferences())
             {
                 aasd = _mg.Security.GetSecureData(sr.SecureDataId) as ActionAccountSecureData;
-                if ( aasd != null)
+                if (aasd != null)
                 {
                     break;
                 }
             }
-            
+
             foreach (ManagementPackOverride mpOverride in overrides)
             {
                 ManagementPackSecureReferenceOverride secRefOverride = mpOverride as ManagementPackSecureReferenceOverride;
-                if (secRefOverride != null )
+                if (secRefOverride != null)
                 {
                     Guid secrefid = secRefOverride.SecureReference.Id;
                     int i = 0, x = 0;
@@ -361,7 +740,7 @@ namespace SMLets
                     WindowsCredentialSecureData credential = secureData as WindowsCredentialSecureData;
                     if (credential != null)
                     {
-                        if(! sdHash.ContainsKey(secrefid))
+                        if (!sdHash.ContainsKey(secrefid))
                         {
                             sdHash.Add(secrefid, String.Format(CultureInfo.InvariantCulture, "{0}\\{1}", credential.Domain, credential.UserName));
                         }
@@ -371,7 +750,7 @@ namespace SMLets
                         ActionAccountSecureData actionAccount = secureData as ActionAccountSecureData;
                         if (actionAccount != null)
                         {
-                            if(! sdHash.ContainsKey(secrefid))
+                            if (!sdHash.ContainsKey(secrefid))
                             {
                                 sdHash.Add(secrefid, String.Format(CultureInfo.InvariantCulture, "{0}\\{1}", actionAccount.Domain, actionAccount.UserName));
                             }
@@ -386,51 +765,52 @@ namespace SMLets
         protected bool GetIsVisible(ManagementPackSecureReference sr)
         {
             // bail right away if we don't have any categories
-            if ( sr.GetCategories().Count == 0 ) { return false; }
-            foreach(ManagementPackCategory c in sr.GetCategories())
+            if (sr.GetCategories().Count == 0) { return false; }
+            foreach (ManagementPackCategory c in sr.GetCategories())
             {
-                try {
+                try
+                {
                     string s = _mg.EntityTypes.GetEnumeration(c.Value.Id).Name;
                     // This is fragile - changes in the underlying system can cause
                     // misbehavior
-                    if ( s == "VisibleToUser" ) { return true; }
+                    if (s == "VisibleToUser") { return true; }
                 }
-                catch { ; }
+                catch {; }
             }
             return false;
         }
 
         protected override void EndProcessing()
         {
-            foreach(ManagementPackSecureReference sr in _mg.Security.GetSecureReferences())
+            foreach (ManagementPackSecureReference sr in _mg.Security.GetSecureReferences())
             {
-                if ( r.Match(sr.Name).Success || r.Match(sr.DisplayName).Success)
+                if (r.Match(sr.Name).Success || r.Match(sr.DisplayName).Success)
                 {
                     bool IsVisible = GetIsVisible(sr);
                     PSObject o = new PSObject(sr);
-                    o.Members.Add(new PSNoteProperty("DomainUser",GetUserName(sr)));
+                    o.Members.Add(new PSNoteProperty("DomainUser", GetUserName(sr)));
                     o.Members.Add(new PSNoteProperty("IsVisible", IsVisible));
                     o.Members.Add(new PSNoteProperty("ManagementPack", sr.GetManagementPack().FriendlyName));
                     WriteVerbose(GetUserName(sr));
                     WriteObject(o);
                 }
             }
-            
+
         }
 
         protected string GetUserName(ManagementPackSecureReference sr)
         {
-            if ( sdHash.ContainsKey(sr.Id) )
+            if (sdHash.ContainsKey(sr.Id))
             {
                 return sdHash[sr.Id].ToString();
             }
-            if ( aasd != null )
+            if (aasd != null)
             {
                 return String.Format(CultureInfo.InvariantCulture, "{0}\\{1}", aasd.Domain, aasd.UserName);
             }
             return "unknown";
         }
-        
+
     }
 
     [Cmdlet(VerbsCommon.Set, "SCSMRunAsAccount", SupportsShouldProcess = true)]
@@ -523,7 +903,7 @@ namespace SMLets
         private WindowsCredentialSecureData _credentialSecureData = new WindowsCredentialSecureData();
         private PSCredential _credential;
         private ManagementPackSecureReference[] _secureReferences = null;
-        
+
         //The user needs to pipe a ManagementPackSecureReference from Get-SCSMRunAsAccount.
         [Parameter(ValueFromPipeline = true,
                     Mandatory = true,
@@ -537,14 +917,14 @@ namespace SMLets
         //The user must supply a PSCredential.  For example:
         //$cred = Get-Credential  <-- This will pop up a dialog the user can enter credentials into.  The password will be stored in a SecureString in $cred.
         //Then the user can call Get-SCSMRunAsAccount -Name "My Run As Account" | Set-SCSMRunAsAccount $cred
-        [Parameter( Position = 0, 
-                    Mandatory=true)]
+        [Parameter(Position = 0,
+                    Mandatory = true)]
         public PSCredential WindowsCredential
         {
             get { return _credential; }
             set { _credential = value; }
         }
-        
+
         protected override void BeginProcessing()
         {
             //This will set the _mg which is the EnterpriseManagementGroup object for the connection to the server
@@ -563,7 +943,7 @@ namespace SMLets
             {
                 _mg.Security.InsertSecureData(_credentialSecureData);
             }
-            
+
         }
 
         protected override void ProcessRecord()
@@ -637,7 +1017,7 @@ namespace SMLets
                     //Now allow this SecureData to be downloaded to all the management servers
                     ApprovedHealthServicesForDistribution<EnterpriseManagementObject> approved = new ApprovedHealthServicesForDistribution<EnterpriseManagementObject>();
                     approved.Result = ApprovedHealthServicesResults.All;
-                    
+
                     //Tell SCSM that we are going to update (or submit new) this SecureReferenceOverride
                     secureReference.Status = ManagementPackElementStatus.PendingUpdate;
 
@@ -648,7 +1028,7 @@ namespace SMLets
                         secureReferenceInfo = secureReference.DisplayName;
                     }
 
-                    if(ShouldProcess(secureReferenceInfo))
+                    if (ShouldProcess(secureReferenceInfo))
                     {
                         _mg.Security.SetApprovedHealthServicesForDistribution<EnterpriseManagementObject>(_credentialSecureData, approved);
                         mpSecureReferenceMP.AcceptChanges();
@@ -703,7 +1083,7 @@ namespace SMLets
             }
 
         }
-        
+
     }
 
 }

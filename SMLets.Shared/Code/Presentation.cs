@@ -18,12 +18,29 @@ namespace SMLets
     public class PresentationCmdletBase : SMCmdletBase
     {
         private string[] _name = { "*" };
-        [Parameter(Position = 0)]
+        [Parameter(Position = 0, ParameterSetName = "Name")]
         public string[] Name
         {
             get { return _name; }
             set { _name = value; }
         }
+
+        private Guid _id;
+        [Parameter(Position = 0, ParameterSetName = "Id")]
+        public Guid Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        private string _dislayName;
+        [Parameter(Position = 0, ParameterSetName = "DisplayName")]
+        public string DisplayName
+        {
+            get { return _dislayName; }
+            set { _dislayName = value; }
+        }
+
     }
 
     #region SCSMView cmdlets
@@ -504,25 +521,42 @@ namespace SMLets
         }
     }
 
-    [Cmdlet(VerbsCommon.Get, "SCSMView")]
+    [Cmdlet(VerbsCommon.Get, "SCSMView", DefaultParameterSetName = "Name")]
     public class GetSCSMViewCommand : PresentationCmdletBase
     {
-        private IList<ManagementPackView> list;
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
-            list = _mg.Presentation.GetViews();
+            
         }
         protected override void ProcessRecord()
         {
-            foreach (string p in Name)
+            if (this.Id != Guid.Empty)
             {
-                WildcardPattern pattern = new WildcardPattern(p, WildcardOptions.CultureInvariant|WildcardOptions.IgnoreCase);
+                WriteObject(_mg.Presentation.GetView(this.Id));
+            }
+            else if (!string.IsNullOrEmpty(this.DisplayName))
+            {
+                var cr = new ManagementPackViewCriteria(string.Format("DisplayName Like '%{0}%'", this.DisplayName));
+                var list = _mg.Presentation.GetViews(cr);
                 foreach (ManagementPackView v in list)
                 {
-                    if (pattern.IsMatch(v.Name))
+                    WriteObject(v);
+                }
+            }
+            else
+            {
+                var list = _mg.Presentation.GetViews();
+                foreach (string p in Name)
+                {
+                    //WildcardPattern pattern = new WildcardPattern(p, WildcardOptions.CultureInvariant | WildcardOptions.IgnoreCase);
+                    Regex r = new Regex(p, RegexOptions.IgnoreCase);
+                    foreach (ManagementPackView v in list)
                     {
-                        WriteObject(v);
+                        if (r.Match(v.Name).Success)
+                        {
+                            WriteObject(v);
+                        }
                     }
                 }
             }
@@ -565,25 +599,41 @@ namespace SMLets
 
     #region SCSMFolder cmdlets
 
-    [Cmdlet(VerbsCommon.Get, "SCSMFolder")]
+    [Cmdlet(VerbsCommon.Get, "SCSMFolder", DefaultParameterSetName = "Name")]
     public class GetSCSMFolderCommand : PresentationCmdletBase
     {
-        private IList<ManagementPackFolder> list;
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
-            list = _mg.Presentation.GetFolders();
         }
         protected override void ProcessRecord()
         {
-            foreach (string p in Name)
+            if (this.Id != Guid.Empty)
             {
-                WildcardPattern pattern = new WildcardPattern(p, WildcardOptions.CultureInvariant | WildcardOptions.IgnoreCase);
+                WriteObject(_mg.Presentation.GetFolder(this.Id));
+            }
+            else if (!string.IsNullOrEmpty(this.DisplayName))
+            {
+                var cr = new ManagementPackFolderCriteria(string.Format("DisplayName Like '%{0}%'", this.DisplayName));
+                var list = _mg.Presentation.GetFolders(cr);
                 foreach (ManagementPackFolder v in list)
                 {
-                    if (pattern.IsMatch(v.Name))
+                    WriteObject(v);
+                }
+            }
+            else
+            {
+                var list = _mg.Presentation.GetFolders();
+                foreach (string p in Name)
+                {
+                    //WildcardPattern pattern = new WildcardPattern(p, WildcardOptions.CultureInvariant | WildcardOptions.IgnoreCase);
+                    Regex r = new Regex(p, RegexOptions.IgnoreCase);
+                    foreach (ManagementPackFolder v in list)
                     {
-                        WriteObject(v);
+                        if (r.Match(v.Name).Success)
+                        {
+                            WriteObject(v);
+                        }
                     }
                 }
             }
@@ -691,7 +741,7 @@ namespace SMLets
 
     #endregion
 
-    [Cmdlet(VerbsCommon.Get, "SCSMStringResource")]
+    [Cmdlet(VerbsCommon.Get, "SCSMStringResource", DefaultParameterSetName = "Name")]
     public class GetSCSMStringResourceCommand : PresentationCmdletBase
     {
         private List<ManagementPackStringResource> l;
@@ -712,10 +762,11 @@ namespace SMLets
             base.ProcessRecord();
             foreach (string n in Name)
             {
-                WildcardPattern wp = new WildcardPattern(n, WildcardOptions.IgnoreCase | WildcardOptions.CultureInvariant);
-                foreach (ManagementPackStringResource r in l)
+                //WildcardPattern wp = new WildcardPattern(n, WildcardOptions.IgnoreCase | WildcardOptions.CultureInvariant);
+                Regex r = new Regex(n, RegexOptions.IgnoreCase);
+                foreach (ManagementPackStringResource v in l)
                 {
-                    if (wp.IsMatch(r.Name))
+                    if (r.Match(v.Name).Success)
                     {
                         WriteObject(r);
                     }
@@ -758,32 +809,101 @@ namespace SMLets
         }
     }
 
-    [Cmdlet(VerbsCommon.Get, "SCSMForm")]
+    [Cmdlet(VerbsCommon.Get, "SCSMForm", DefaultParameterSetName = "Name")]
     public class GetSCSMFormCommand : PresentationCmdletBase
     {
-        private IList<ManagementPackForm> list;
+        ManagementPackElement _target;
+        [Parameter(Position = 1)]
+        public ManagementPackElement Target
+        {
+            get { return _target; }
+            set { _target = value; }
+        }
+
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
-            list = _mg.Presentation.GetForms();
         }
         protected override void ProcessRecord()
         {
-            foreach (string p in Name)
+            string targetCriteria = this.BuildTargetCriteria();
+            if (this.Id != Guid.Empty)
             {
-                WildcardPattern pattern = new WildcardPattern(p, WildcardOptions.CultureInvariant | WildcardOptions.IgnoreCase);
+                WriteObject(_mg.Presentation.GetForm(this.Id));
+            }
+            else if (!string.IsNullOrEmpty(this.DisplayName))
+            {
+                string criteria = string.Format("DisplayName Like '%{0}%'", this.DisplayName);
+                if (!string.IsNullOrEmpty(targetCriteria))
+                {
+                    criteria += string.Format(" AND ({0})", targetCriteria);
+                }
+                var cr = new ManagementPackFormCriteria(criteria);
+                var list = _mg.Presentation.GetForms(cr);
                 foreach (ManagementPackForm v in list)
                 {
-                    if (pattern.IsMatch(v.Name))
+                    WriteObject(v);
+                }
+            }
+            else if (this.Name.Length > 0)
+            {
+                IList<ManagementPackForm> list = null;
+                if (!string.IsNullOrEmpty(targetCriteria))
+                    list = _mg.Presentation.GetForms(new ManagementPackFormCriteria(targetCriteria));
+                else
+                    list = _mg.Presentation.GetForms();
+
+                foreach (string p in Name)
+                {
+                    //WildcardPattern pattern = new WildcardPattern(p, WildcardOptions.CultureInvariant | WildcardOptions.IgnoreCase);
+                    Regex r = new Regex(p, RegexOptions.IgnoreCase);
+                    foreach (ManagementPackForm v in list)
                     {
-                        WriteObject(v);
+                        if (r.Match(v.Name).Success)
+                        {
+                            WriteObject(v);
+                        }
                     }
                 }
             }
+            else if (this.Target != null)
+            {
+                var cr = new ManagementPackFormCriteria(this.BuildTargetCriteria());
+                var list = _mg.Presentation.GetForms(cr);
+                foreach (ManagementPackForm v in list)
+                {
+                    WriteObject(v);
+                }
+            }
+        }
+
+        private string BuildTargetCriteria()
+        {
+            if (this.Target != null)
+            {
+                WriteVerbose(string.Format("Build criteria based on {0}", this.Target.Name));
+                List<string> targets = new List<string>();
+                targets.Add(string.Format("Target = '{0}'", this.Target.Id));
+                if (this.Target is ManagementPackClass)
+                {
+                    // get all type projections for this class
+                    var crTP = new ManagementPackTypeProjectionCriteria(string.Format("Type = '{0}'", this.Target.Id));
+                    var allTPs = _mg.EntityTypes.GetTypeProjections(crTP);
+                    foreach (var tp in allTPs)
+                    {
+                        targets.Add(string.Format("Target = '{0}'", tp.Id));
+                    }
+                }
+                var criteria = string.Join(" OR ", targets.ToArray());
+                WriteVerbose(string.Format("Target criteria: {0}", criteria));
+                return criteria;
+            }
+
+            return "";
         }
     }
 
-    [Cmdlet(VerbsCommon.Get, "SCSMPage")]
+    [Cmdlet(VerbsCommon.Get, "SCSMPage", DefaultParameterSetName = "Name")]
     public class GetSCSMPageCommand : PresentationCmdletBase
     {
         private IList<ManagementPackUIPage> list;
@@ -808,7 +928,7 @@ namespace SMLets
         }
     }
     
-    [Cmdlet(VerbsCommon.Get, "SCSMPageSet")]
+    [Cmdlet(VerbsCommon.Get, "SCSMPageSet", DefaultParameterSetName = "Name")]
     public class GetSCSMPageSetCommand : PresentationCmdletBase
     {
         private IList<ManagementPackUIPageSet> list;
@@ -833,7 +953,7 @@ namespace SMLets
         }
     }
 
-    [Cmdlet(VerbsCommon.Get, "SCSMViewSetting")]
+    [Cmdlet(VerbsCommon.Get, "SCSMViewSetting", DefaultParameterSetName = "Name")]
     public class GetSCSMViewSettingCommand : PresentationCmdletBase
     {
         private IList<ViewSetting> list;
@@ -858,7 +978,7 @@ namespace SMLets
         }
     }
 
-    [Cmdlet(VerbsCommon.Get, "SCSMViewType")]
+    [Cmdlet(VerbsCommon.Get, "SCSMViewType", DefaultParameterSetName = "Name")]
     public class GetSCSMViewTypeCommand : PresentationCmdletBase
     {
         private IList<ManagementPackViewType> list;
@@ -883,7 +1003,7 @@ namespace SMLets
         }
     }
 
-    [Cmdlet(VerbsCommon.Get, "SCSMImage")]
+    [Cmdlet(VerbsCommon.Get, "SCSMImage", DefaultParameterSetName = "Name")]
     public class GetSCSMImageCommand : PresentationCmdletBase
     {
 
@@ -906,10 +1026,11 @@ namespace SMLets
             {
                 foreach (string p in Name)
                 {
-                    WildcardPattern pattern = new WildcardPattern(p, WildcardOptions.CultureInvariant | WildcardOptions.IgnoreCase);
+                    //WildcardPattern pattern = new WildcardPattern(p, WildcardOptions.CultureInvariant | WildcardOptions.IgnoreCase);
+                    Regex r = new Regex(p, RegexOptions.IgnoreCase);
                     foreach (ManagementPackImage i in list)
                     {
-                        if (pattern.IsMatch(i.FileName) && !i.HasNullStream)
+                        if (r.Match(i.FileName).Success && !i.HasNullStream)
                         {
                             WriteObject(i);
                         }
@@ -925,10 +1046,11 @@ namespace SMLets
             }
             foreach (string p in Name)
             {
-                WildcardPattern pattern = new WildcardPattern(p, WildcardOptions.CultureInvariant | WildcardOptions.IgnoreCase);
+                //WildcardPattern pattern = new WildcardPattern(p, WildcardOptions.CultureInvariant | WildcardOptions.IgnoreCase);
+                Regex r = new Regex(p, RegexOptions.IgnoreCase);
                 foreach (ManagementPackImage v in list)
                 {
-                    if (pattern.IsMatch(v.FileName) && ! v.HasNullStream)
+                    if (r.Match(v.FileName).Success && !v.HasNullStream)
                     {
                         if (ShouldProcess(v.FileName))
                         {
@@ -958,27 +1080,42 @@ namespace SMLets
         }
     }
 
-    [Cmdlet(VerbsCommon.Get, "SCSMConsoleTask")]
+    [Cmdlet(VerbsCommon.Get, "SCSMConsoleTask", DefaultParameterSetName = "Name")]
     public class GetSCSMConsoleTaskCommand : PresentationCmdletBase
     {
-        private IList<ManagementPackConsoleTask> consoleTaskList;
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
-            consoleTaskList = _mg.TaskConfiguration.GetConsoleTasks();
         }
         protected override void ProcessRecord()
         {
             base.ProcessRecord();
-            foreach (ManagementPackConsoleTask task in consoleTaskList)
+            if (this.Id != Guid.Empty)
             {
-                foreach (string n in Name)
+                WriteObject(_mg.TaskConfiguration.GetConsoleTask(this.Id));
+            }
+            else if (!string.IsNullOrEmpty(this.DisplayName))
+            {
+                var cr = new ManagementPackConsoleTaskCriteria(string.Format("DisplayName Like '%{0}%'", this.DisplayName));
+                var list = _mg.TaskConfiguration.GetConsoleTasks(cr);
+                foreach (ManagementPackConsoleTask v in list)
                 {
-                    WildcardPattern wp = new WildcardPattern(n, WildcardOptions.CultureInvariant | WildcardOptions.IgnoreCase);
-                    if (wp.IsMatch(task.Name))
+                    WriteObject(v);
+                }
+            }
+            else
+            {
+                var list = _mg.TaskConfiguration.GetConsoleTasks();
+                foreach (string p in Name)
+                {
+                    //WildcardPattern pattern = new WildcardPattern(p, WildcardOptions.CultureInvariant | WildcardOptions.IgnoreCase);
+                    Regex r = new Regex(p, RegexOptions.IgnoreCase);
+                    foreach (ManagementPackConsoleTask v in list)
                     {
-                        WriteObject(task);
-                        break;
+                        if (r.Match(v.Name).Success)
+                        {
+                            WriteObject(v);
+                        }
                     }
                 }
             }

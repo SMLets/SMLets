@@ -345,9 +345,10 @@ namespace SMLets
         public static void SetMG(EnterpriseManagementGroup emg)
         {
             if ( ht == null ) { ht = new Hashtable(StringComparer.OrdinalIgnoreCase); }
-            if (!ht.ContainsKey(GenereateUniqSessionId(emg.ConnectionSettings)))
+            string sessionId = GenereateUniqSessionId(emg.ConnectionSettings);
+            if (!ht.ContainsKey(sessionId))
             {
-                ht.Add(emg.ConnectionSettings.ServerName,emg);
+                ht.Add(sessionId, emg);
             }
         }
         public static void RemoveMG(EnterpriseManagementConnectionSettings settings)

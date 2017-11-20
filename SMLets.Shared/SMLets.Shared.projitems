@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>84035c15-4586-4204-b028-7bbb5ad6c34c</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>SMLets.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)about_SMLets.help.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Bugs\Test-6798.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Bugs\Test-7730.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)build.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Common.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\compit.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Document.rtf" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\generated\comp.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\generated\comp2.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\generated\comp3.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\generated\inci.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\generated\new-projectionhash.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\get-componentTree.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Initialize-Change.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Initialize-ChangeRequest.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Initialize-ComputerInstance.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\initialize-ComputerProjection.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Initialize-ComputerProjectionPeripherals.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Initialize-DemoData.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Initialize-Group.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\initialize-incident.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\initialize-knowledgearticle.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Initialize-Offering.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Initialize-Printer.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Initialize-Problem.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Initialize-Queue.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Initialize-ReleaseRecord.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Initialize-RequestFromRO.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Initialize-Service.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\initialize-ServiceRequest.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\initialize-SoftwareItem.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\initialize-SoftwareUpdate.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Initialize-User.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\New-ReleaseRecord.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\Remove-DemoData.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\ServiceCatalog\convert-RO.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\ServiceCatalog\convert-SO.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\ServiceCatalog\Link-SORO.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\ServiceCatalog\New-CatalogCSV.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\ServiceCatalog\New-ServiceCatalog.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\set-billabletime.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)DataGen\values.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)ReadMe.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Schemas\SearchCriteriaSchema.xsd" />
+    <None Include="$(MSBuildThisFileDirectory)Scripts\display-richtext.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Export-BundleContents.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Export-KnowledgeArticle.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Get-ActiveIncidentsWithTargetResolutionTimeLessThanNow.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Get-ActiveIncidentsWithTimeAddedInTheLastFourHours.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Get-ClassHierarchy.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Get-EmailAddress.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Get-EnumStack.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\get-lorem.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\get-mpbinfo.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\get-ROQuestions.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\get-SCDWMPDeploymentStatus.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\get-scsmdeleteditem.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\get-SCSMProjectionComponent.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\get-SCSMSubscription.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\get-scsmuser.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Get-SCSMWorkflow.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\get-singlepropertycriteria.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Get-SMConfig.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\get-smproperty.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\get-smtask.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\get-smtaskresult.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\get-taskparameters.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Get-UserRolesReport.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\invoke-smtask.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\new-criteria.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\New-MPBFile.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\objectcriteria.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Restore-SCSMDeletedItem.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Set-IncidentUser.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Set-LastModified.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\test-relationshipobject.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Test-SCManagementPack.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\test-SupportGroupConfig.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Scripts\Update-MPVersion.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)SMLets.Format.ps1xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)SMLets.psd1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)SMLets.psm1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)SMLets.Types.ps1xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)Test\Common.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\CreateNotificationSubscription.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\Document.rtf" />
+    <None Include="$(MSBuildThisFileDirectory)Test\get-IncidentPriority.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\initialize-knowledgearticle.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\Invoke-Test.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test-addro.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test-newproblem.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test-newprojectionobject.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test-newroq.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test-newso.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test-objecttemplate.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test-scgroup.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test-scqueue.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test-soro.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\Test-SortParameter.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test001.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test002.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test003.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test004.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test005.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test006.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test007.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test008.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test009.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test010.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test011.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)Test\test012.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)WiX\build-msi.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)WiX\dd.ps1" />
+    <None Include="$(MSBuildThisFileDirectory)WiX\new-msi.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="$(MSBuildThisFileDirectory)WiX\smlets-license.rtf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Code\Announcement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\Categories.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\DataWarehouse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\EntityObjects.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\EntityTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\Helper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\Identifiers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\Incident.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\ManagementPack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\Monitoring.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\Role.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MPBMaker\FileInformation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\Offering.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\Presentation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\Resources.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\Security.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\Session.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\Subscription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Code\Templates.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Schemas\Search.xml" />
+    <Content Include="$(MSBuildThisFileDirectory)SMLets.Module.dll-Help.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="$(MSBuildThisFileDirectory)Test\EnumMP.xml" />
+    <Content Include="$(MSBuildThisFileDirectory)Test\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Code\" />
+  </ItemGroup>
+</Project>

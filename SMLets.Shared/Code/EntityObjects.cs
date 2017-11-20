@@ -2412,13 +2412,23 @@ public class GetSMObjectProjectionCommand : FilterCmdletBase
         set { _statistic = value; }
     }
 
-    // This is used for instream projection
-    // creation. needed for those projections whose
-    // alias targets are themselves a projection
-    // (such as ResolutionAndBillableLog 
-    // alias BillableLogs while requires a billabletime 
-    // and workeduponbyuser
-    private SwitchParameter _noCommit;
+
+    private SwitchParameter _adoptWithTargetEndpoint;
+    [Parameter(ParameterSetName = "Raw", Mandatory = false)]
+    [Parameter(ParameterSetName = "Name", Mandatory = false)]
+    [Parameter(ParameterSetName = "Criteria", Mandatory = false)]
+    public SwitchParameter AdoptWithTargetEndpoint
+    {
+        get { return _adoptWithTargetEndpoint; }
+        set { _adoptWithTargetEndpoint = value; }
+    }
+        // This is used for instream projection
+        // creation. needed for those projections whose
+        // alias targets are themselves a projection
+        // (such as ResolutionAndBillableLog 
+        // alias BillableLogs while requires a billabletime 
+        // and workeduponbyuser
+        private SwitchParameter _noCommit;
     [Parameter]
     public SwitchParameter NoCommit
     {
@@ -2586,7 +2596,65 @@ public class GetSMObjectProjectionCommand : FilterCmdletBase
             o.TypeNames.Insert(1, "EnterpriseManagementObjectProjection");
             o.Members.Add(new PSNoteProperty("__ProjectionType", myCriteria.Projection.Name));
 
-            foreach (KeyValuePair<ManagementPackRelationshipEndpoint, IComposableProjection> helper in p)
+            if(this.AdoptWithTargetEndpoint)
+                AdoptProjectionComponent(o, p);
+            else
+                AdoptProjectionComponent(o, p, myCriteria.Projection);
+
+                WriteObject(o);
+        }
+    }
+        private void AdoptProjectionComponent(PSObject parentObject, IComposableProjection projComp, ITypeProjectionComponent tpComp)
+        {
+            foreach (var tpSubComp in tpComp)
+            {
+                WriteVerbose("Adapting related objects by alias: " + tpSubComp.Value.Alias);
+                foreach (var subObjProj in projComp[tpSubComp.Key])
+                {
+                    string myName = tpSubComp.Value.Alias;
+                    PSObject adaptedEMO = ServiceManagerObjectHelper.AdaptManagementObject(this, subObjProj.Object);
+                    // If the MaxCardinality is greater than one, it's definitely a collection
+                    // so start out that way
+                    if (tpSubComp.Key.MaxCardinality > 1)
+                    {
+                        // OK, this is a collection, so add the critter
+                        // This is so much easier in PowerShell
+                        if (parentObject.Properties[myName] == null)
+                        {
+                            parentObject.Members.Add(new PSNoteProperty(myName, new ArrayList()));
+                        }
+                        ((ArrayList)parentObject.Properties[myName].Value).Add(adaptedEMO);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            parentObject.Members.Add(new PSNoteProperty(myName, adaptedEMO));
+                        }
+                        catch (ExtendedTypeSystemException e)
+                        {
+                            WriteVerbose("Readapting relationship object -> collection :" + e.Message);
+                            // We should really only get this exception if we
+                            // try to add a create a new property which already exists
+                            Object currentPropertyValue = parentObject.Properties[myName].Value;
+                            ArrayList newValue = new ArrayList();
+                            newValue.Add(currentPropertyValue);
+                            newValue.Add(adaptedEMO);
+                            parentObject.Properties[myName].Value = newValue;
+                            // TODO
+                            // If this already exists, it should be converted to a collection
+                        }
+                    }
+
+                    AdoptProjectionComponent(adaptedEMO, subObjProj, tpSubComp.Value);
+                }
+                
+            }
+        }
+
+        private void AdoptProjectionComponent(PSObject parentObject, IComposableProjection projComp)
+        {
+            foreach (KeyValuePair<ManagementPackRelationshipEndpoint, IComposableProjection> helper in projComp)
             {
                 // EnterpriseManagementObject myEMO = (EnterpriseManagementObject)helper.Value.Object;
                 WriteVerbose("Adapting related objects: " + helper.Key.Name);
@@ -2598,38 +2666,39 @@ public class GetSMObjectProjectionCommand : FilterCmdletBase
                 {
                     // OK, this is a collection, so add the critter
                     // This is so much easier in PowerShell
-                    if (o.Properties[myName] == null)
+                    if (parentObject.Properties[myName] == null)
                     {
-                        o.Members.Add(new PSNoteProperty(myName, new ArrayList()));
+                        parentObject.Members.Add(new PSNoteProperty(myName, new ArrayList()));
                     }
-                    ((ArrayList)o.Properties[myName].Value).Add(adaptedEMO);
+                    ((ArrayList)parentObject.Properties[myName].Value).Add(adaptedEMO);
                 }
                 else
                 {
                     try
                     {
-                        o.Members.Add(new PSNoteProperty(helper.Key.Name, adaptedEMO));
+                        parentObject.Members.Add(new PSNoteProperty(helper.Key.Name, adaptedEMO));
                     }
                     catch (ExtendedTypeSystemException e)
                     {
                         WriteVerbose("Readapting relationship object -> collection :" + e.Message);
                         // We should really only get this exception if we
                         // try to add a create a new property which already exists
-                        Object currentPropertyValue = o.Properties[myName].Value;
+                        Object currentPropertyValue = parentObject.Properties[myName].Value;
                         ArrayList newValue = new ArrayList();
                         newValue.Add(currentPropertyValue);
                         newValue.Add(adaptedEMO);
-                        o.Properties[myName].Value = newValue;
+                        parentObject.Properties[myName].Value = newValue;
                         // TODO
                         // If this already exists, it should be converted to a collection
                     }
+
+                    
                 }
+                
+                AdoptProjectionComponent(adaptedEMO, helper.Value);
+
             }
-
-
-            WriteObject(o);
         }
-    }
 }
 
 [Cmdlet(VerbsCommon.Set, "SCSMObjectProjection", SupportsShouldProcess = true)]

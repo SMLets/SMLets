@@ -1,5 +1,6 @@
 # SCSM PowerShell Cmdlets 
 
+<b>Warning:</b> this project is not actively development. Only critical reported bugs will be fixed be the owner. Fill free to contribute.
 
 ### Project Description
 This project provides cmdlets for System Center Service Manager 2012/2012 SP1/2012 R2/2016 which can be used to automate common tasks.

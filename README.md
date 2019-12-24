@@ -24,7 +24,7 @@ SMLets cmdlets can be installed with two different ways:
 
 To install exact version from PowerShell Gallery please use <i>-RequiredVersion</i> parameter:
 
-`Install-Module -Name SMLets -RequiredVersion 0.7.2012.0`
+`Install-Module -Name SMLets -RequiredVersion 1.0.2012.0`
 
 Current commands:
 ```
@@ -77,6 +77,7 @@ Remove-SCSMUserRole                     Remove-SCSMView
 Set-SCSMAnnouncement                    Set-SCSMIncident
 Set-SCSMObject                          Set-SCSMObjectProjection
 Set-SCSMObjectTemplate                  Set-SCSMRunAsAccount
+Set-SCSMDefaultComputer
 ```
 
 #### Small guide

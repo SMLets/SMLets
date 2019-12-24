@@ -1,7 +1,7 @@
 <?xml version='1.0'?>
 <Wix xmlns='http://schemas.microsoft.com/wix/2006/wi'>
-  <Product Id='434f2dfc-a6fb-4702-bcd6-17b347b3cec6' Name='Service Manager 2016 SMLets Module v.0.7' Language='1033'
-           Version='1.0.1.0' Manufacturer='James W. Truher' UpgradeCode='7cf051aa-2dc8-40a3-ad46-5fea16a7cce1' >
+  <Product Id='434f2dfc-a6fb-4702-bcd6-17b347b3cec6' Name='SMLets Module v.1.0 for Service Manager 2016 and above' Language='1033'
+           Version='1.0.0.0' Manufacturer='James W. Truher' UpgradeCode='7cf051aa-2dc8-40a3-ad46-5fea16a7cce1' >
     <?if $(env.SMLETS64)=1 ?>
     <Package Description='This is the SMLets Module for Service Manager 2016' Platform="x64"
              Comments='This is the SMLets Module for Service Manager 2016'

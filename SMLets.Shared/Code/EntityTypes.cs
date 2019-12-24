@@ -1461,6 +1461,14 @@ namespace SMLets
             set { _recursive = value; }
         }
 
+        private SwitchParameter _includeExtensions;
+        [Parameter]
+        public SwitchParameter IncludeExtensions
+        {
+            get { return _includeExtensions; }
+            set { _includeExtensions = value; }
+        }
+
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
@@ -1469,16 +1477,11 @@ namespace SMLets
         protected override void ProcessRecord()
         {
             WriteVerbose("Process class " + this.Class.Name);
-            if (this.Recursive.ToBool())
-            {
-                this.WriteVerbose("Return recursive list");
-                this.WriteObject(this.Class.GetProperties(BaseClassTraversalDepth.Recursive), true);
-            }
-            else
-            {
-                this.WriteVerbose("Return list only for current class");
-                this.WriteObject(this.Class.GetProperties(), true);
-            }
+            var recursion = this.Recursive.ToBool() ? BaseClassTraversalDepth.Recursive : BaseClassTraversalDepth.None;
+            var extensionMode = this.IncludeExtensions.ToBool() ? PropertyExtensionMode.All : PropertyExtensionMode.None;
+            this.WriteVerbose($"Recursion: {recursion}. extensionMode: {extensionMode}");
+            var retCollection = this.Class.GetProperties(recursion, extensionMode);
+            this.WriteObject(retCollection, true);
         }
 
     }

@@ -2,25 +2,25 @@
 #
 @{
     VariablesToExport        = @()
-    CompanyName              = 'CodePlex'
+    CompanyName              = ''
     CLRVersion               = ''
     PowerShellHostVersion    = ''
     FileList                 = @()
     Author                   = 'Sundqvist, Truher, Wright, Gritsenko'
-    Copyright                = 'Copyright 2017'
+    Copyright                = 'Copyright 2019'
     AliasesToExport          = @()
-    ModuleVersion            = '0.7.0.0'
+    ModuleVersion            = '1.0.0.0'
     GUID                     = 'af1da698-e594-4527-bd99-93b0e0dcd94e'
-    NestedModules            = join-path $psScriptRoot SMLets.Module.dll
+    NestedModules            = @("SMLets.Module.dll")
     FunctionsToExport        = '*'
-    ModuleToProcess          = 'SMLets.psm1'
-    Description              = 'CodePlex Service Manager Cmdlets'
+    RootModule				 = 'SMLets.psm1'
+    Description              = 'Cmdlets for Microsoft System Center Service Manager'
     CmdletsToExport          = '*'
     PowerShellHostName       = ''
     PowerShellVersion        = ''
     ModuleList               = @()
     DotNetFrameworkVersion   = ''
-    RequiredAssemblies       = Join-Path $psScriptRoot SMLets.Module.dll
+    RequiredAssemblies       = @("SMLets.Module.dll")
     ProcessorArchitecture    = ''
     PrivateData              = ''
 }

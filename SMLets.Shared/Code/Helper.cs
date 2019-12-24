@@ -49,7 +49,7 @@ namespace SMLets
         }
 
         private string _threeLetterWindowsLanguageName = CultureInfo.CurrentUICulture.ThreeLetterWindowsLanguageName;
-        [Parameter(HelpMessage = "Language code for connection. The deafult is current UI Culture", Mandatory = false)]
+        [Parameter(HelpMessage = "Language code for connection. The default is current UI Culture", Mandatory = false)]
         [ValidateNotNullOrEmpty]
         public string ThreeLetterWindowsLanguageName
         {
@@ -64,15 +64,18 @@ namespace SMLets
                 // A provided session always wins
                 if (SCSMSession != null)
                 {
+                    WriteVerbose("SCSMSession provided, use it");
                     // Make sure that we have this session in our hash table
                     ConnectionHelper.SetMG(SCSMSession);
                     _mg = SCSMSession;
                 }
                 else // No session, go hunting
                 {
+                    WriteVerbose("Checking SMDefaultSession...");
                     PSVariable DefaultSession = SessionState.PSVariable.Get("SMDefaultSession");
                     if (DefaultSession != null && (DefaultSession.Value is EnterpriseManagementGroup || (DefaultSession.Value is PSObject && (DefaultSession.Value as PSObject).BaseObject is EnterpriseManagementGroup)))
                     {
+                        WriteVerbose("Default SCSMSession found");
                         _mg = DefaultSession.Value is EnterpriseManagementGroup? 
                             (EnterpriseManagementGroup)DefaultSession.Value:
                              (EnterpriseManagementGroup)(DefaultSession.Value as PSObject).BaseObject;
@@ -80,13 +83,16 @@ namespace SMLets
                     }
                     else
                     {
+                        WriteVerbose("Checking SMDefaultComputer...");
                         PSVariable DefaultComputer = SessionState.PSVariable.Get("SMDefaultComputer");
                         if (DefaultComputer != null)
                         {
+                            WriteVerbose($"Connect using SMDefaultComputer '{DefaultComputer.Value}'");
                             _mg = ConnectionHelper.GetMG(DefaultComputer.Value.ToString(), _credential, this._threeLetterWindowsLanguageName);
                         }
                         else
                         {
+                            WriteVerbose($"Connect using ComputerName '{ComputerName}'");
                             _mg = ConnectionHelper.GetMG(ComputerName, _credential, this._threeLetterWindowsLanguageName);
                         }
                     }

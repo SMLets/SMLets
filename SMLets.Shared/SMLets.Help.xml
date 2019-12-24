@@ -3732,7 +3732,7 @@
 	<command:details>
 		<command:name>Get-SCSMClassProperty</command:name>
 		<maml:description>
-			<maml:para>Get properties of the SCSM class</maml:para>
+			<maml:para />
 		</maml:description>
 		<maml:copyright>
 			<maml:para />
@@ -3750,21 +3750,21 @@
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 				<maml:name>Class</maml:name>
 				<maml:description>
-					<maml:para>SCSM class instance</maml:para>
+					<maml:para />
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">ManagementPackClass</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Recursive</maml:name>
 				<maml:description>
-					<maml:para>Return properties for this class and for all parent classes</maml:para>
+					<maml:para />
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>IncludeExtensions</maml:name>
 				<maml:description>
-					<maml:para>Return properties for this class and all extension classes</maml:para>
+					<maml:para />
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -3802,7 +3802,7 @@
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="true (ByValue)" position="0">
 			<maml:name>Class</maml:name>
 			<maml:description>
-				<maml:para>SCSM class instance</maml:para>
+				<maml:para />
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">ManagementPackClass</command:parameterValue>
 			<dev:type>
@@ -3814,7 +3814,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Recursive</maml:name>
 			<maml:description>
-				<maml:para>Return properties for this class and for all parent classes</maml:para>
+				<maml:para />
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -3826,7 +3826,7 @@
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>IncludeExtensions</maml:name>
 			<maml:description>
-				<maml:para>Return properties for this class and all extension classes</maml:para>
+				<maml:para />
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -5811,7 +5811,7 @@
 	<command:details>
 		<command:name>Get-SCSMIncident</command:name>
 		<maml:description>
-			<maml:para>Use to retrieve incident type projections based on filter. The filter is built using provided parameters.</maml:para>
+			<maml:para />
 		</maml:description>
 		<maml:copyright>
 			<maml:para />
@@ -6167,46 +6167,6 @@
 		</maml:alert>
 	</maml:alertSet>
 	<command:examples>
-		<command:example>
-			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>Get-SCSMIncident -ID IR103</dev:code>
-			<dev:remarks>
-				<maml:para>Use the id of the incident to locate it.</maml:para>
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
-		<command:example>
-			<maml:title>--------------------------  Example 2  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>Get-SCSMIncident -Title &quot;Network%&quot; -Status &quot;Active&quot; -CreatedBefore &quot;2010-05-25&quot;</dev:code>
-			<dev:remarks>
-				<maml:para>Returns all incidents that has a title starting with &quot;Network&quot;, a status &quot;Active&quot; and hasn&#39;t been modified for the last two days.</maml:para>
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
 	</command:examples>
 	<maml:relatedLinks>
 	</maml:relatedLinks>
@@ -6610,15 +6570,14 @@
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>NoAdapt</maml:name>
 				<maml:description>
-					<maml:para>Do not wrap SCSM properties to PSObect members</maml:para>
+					<maml:para />
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Filter</maml:name>
 				<maml:description>
-					<maml:para>Simple SCSM criteria. You can use PowerShell syntax or SCSM syntax for comparation operators.
-NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para>
+					<maml:para />
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -6684,7 +6643,7 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>NoAdapt</maml:name>
 				<maml:description>
-					<maml:para>Do not wrap SCSM properties to PSObect members</maml:para>
+					<maml:para />
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
@@ -6698,8 +6657,7 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Filter</maml:name>
 				<maml:description>
-					<maml:para>Simple SCSM criteria. You can use PowerShell syntax or SCSM syntax for comparation operators.
-NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para>
+					<maml:para />
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -6765,15 +6723,14 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>NoAdapt</maml:name>
 				<maml:description>
-					<maml:para>Do not wrap SCSM properties to PSObect members</maml:para>
+					<maml:para />
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Filter</maml:name>
 				<maml:description>
-					<maml:para>Simple SCSM criteria. You can use PowerShell syntax or SCSM syntax for comparation operators.
-NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para>
+					<maml:para />
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -6839,15 +6796,14 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>NoAdapt</maml:name>
 				<maml:description>
-					<maml:para>Do not wrap SCSM properties to PSObect members</maml:para>
+					<maml:para />
 				</maml:description>
 				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			</command:parameter>
 			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 				<maml:name>Filter</maml:name>
 				<maml:description>
-					<maml:para>Simple SCSM criteria. You can use PowerShell syntax or SCSM syntax for comparation operators.
-NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para>
+					<maml:para />
 				</maml:description>
 				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
@@ -6918,7 +6874,7 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>NoAdapt</maml:name>
 			<maml:description>
-				<maml:para>Do not wrap SCSM properties to PSObect members</maml:para>
+				<maml:para />
 			</maml:description>
 			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
 			<dev:type>
@@ -6930,8 +6886,7 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
 			<maml:name>Filter</maml:name>
 			<maml:description>
-				<maml:para>Simple SCSM criteria. You can use PowerShell syntax or SCSM syntax for comparation operators.
-NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para>
+				<maml:para />
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
@@ -16473,11 +16428,7 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 	<command:details>
 		<command:name>New-SCSMIncident</command:name>
 		<maml:description>
-			<maml:para>
-          Used to create new incidents based in given parameters.
-          Default values:
-          ServerName = &quot;localhost&quot;
-          Status = &quot;Active&quot;</maml:para>
+			<maml:para />
 		</maml:description>
 		<maml:copyright>
 			<maml:para />
@@ -16487,7 +16438,7 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 		<dev:version />
 	</command:details>
 	<maml:description>
-		<maml:para>This is the Description section</maml:para>
+		<maml:para />
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -16890,46 +16841,6 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 		</maml:alert>
 	</maml:alertSet>
 	<command:examples>
-		<command:example>
-			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>New-SCSMIncident -Title &quot;Network issue&quot; -Description &quot;User cannot reach his home folder&quot; -Impact Low -Urgency High -Classification &quot;Networking&quot; -Source Email</dev:code>
-			<dev:remarks>
-				<maml:para>Registers a new incident with given property values.</maml:para>
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
-		<command:example>
-			<maml:title>--------------------------  Example 2  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>New-SCSMIncident -Title &quot;Network issue&quot; -Description &quot;User cannot reach his home folder&quot; -Impact Low -Urgency High -Classification &quot;Networking&quot; -Source Email -AffectedUser &quot;domain\user&quot; -Status &quot;Closed&quot;</dev:code>
-			<dev:remarks>
-				<maml:para />
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
 	</command:examples>
 	<maml:relatedLinks>
 	</maml:relatedLinks>
@@ -24527,7 +24438,7 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 	<command:details>
 		<command:name>Set-SCSMDefaultComputer</command:name>
 		<maml:description>
-			<maml:para>Set SMDefaultComputer varaible and optionally save it to profile (CurrentUserAllHosts)</maml:para>
+			<maml:para />
 		</maml:description>
 		<maml:copyright>
 			<maml:para />
@@ -24537,9 +24448,7 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 		<dev:version />
 	</command:details>
 	<maml:description>
-		<maml:para>You can use this cmdlets when:
- * You need to save deafult SCSM server name fo future
- * You need to set default SCSM server name just for current session</maml:para>
+		<maml:para />
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -24547,16 +24456,9 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 			<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
 				<maml:name>ComputerName</maml:name>
 				<maml:description>
-					<maml:para>SCSM server name</maml:para>
-				</maml:description>
-				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-			</command:parameter>
-			<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-				<maml:name>DoNotSaveToProfile</maml:name>
-				<maml:description>
 					<maml:para />
 				</maml:description>
-				<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+				<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			</command:parameter>
 		</command:syntaxItem>
 	</command:syntax>
@@ -24564,23 +24466,11 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 		<command:parameter required="true" variableLength="false" globbing="false" pipelineInput="false" position="1">
 			<maml:name>ComputerName</maml:name>
 			<maml:description>
-				<maml:para>SCSM server name</maml:para>
+				<maml:para />
 			</maml:description>
 			<command:parameterValue required="true" variableLength="false">String</command:parameterValue>
 			<dev:type>
 				<maml:name>String</maml:name>
-				<maml:uri/>
-			</dev:type>
-			<dev:defaultValue></dev:defaultValue>
-		</command:parameter>
-		<command:parameter required="false" variableLength="false" globbing="false" pipelineInput="false" position="named">
-			<maml:name>DoNotSaveToProfile</maml:name>
-			<maml:description>
-				<maml:para />
-			</maml:description>
-			<command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-			<dev:type>
-				<maml:name>SwitchParameter</maml:name>
 				<maml:uri/>
 			</dev:type>
 			<dev:defaultValue></dev:defaultValue>
@@ -24619,46 +24509,6 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 		</maml:alert>
 	</maml:alertSet>
 	<command:examples>
-		<command:example>
-			<maml:title>--------------------------  Set default server name and save to profile  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>Set-SCSMDefaultComputer &quot;scsm01&quot;</dev:code>
-			<dev:remarks>
-				<maml:para />
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
-		<command:example>
-			<maml:title>--------------------------  Set  deafult server name just for current session  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>Set-SCSMDefaultComputer &quot;scsm12&quot; -DoNotSaveToProfile</dev:code>
-			<dev:remarks>
-				<maml:para />
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
 	</command:examples>
 	<maml:relatedLinks>
 	</maml:relatedLinks>
@@ -24668,7 +24518,7 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 	<command:details>
 		<command:name>Set-SCSMIncident</command:name>
 		<maml:description>
-			<maml:para>Used to update incidents, only passed properties will be updated.</maml:para>
+			<maml:para />
 		</maml:description>
 		<maml:copyright>
 			<maml:para />
@@ -24678,7 +24528,7 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 		<dev:version />
 	</command:details>
 	<maml:description>
-		<maml:para>This is the Description section</maml:para>
+		<maml:para />
 	</maml:description>
 	<command:syntax>
 		<command:syntaxItem>
@@ -25177,46 +25027,6 @@ NOTE: Please use &#39;Name&#39; property instead of Id for Work Items</maml:para
 		</maml:alert>
 	</maml:alertSet>
 	<command:examples>
-		<command:example>
-			<maml:title>--------------------------  Example 1  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>Set-SCSMIncident -ID IR33 -Comment &quot;User still not reaching his home folder&quot;</dev:code>
-			<dev:remarks>
-				<maml:para>Adds an analyst comment to the incident with an id matching IR33.</maml:para>
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
-		<command:example>
-			<maml:title>--------------------------  Example 2  --------------------------</maml:title>
-			<maml:introduction>
-				<maml:paragraph>PS C:\&gt;</maml:paragraph>
-			</maml:introduction>
-			<dev:code>Get-SCSMIncident -Title &quot;Network%&quot; -Status Active | Set-SCSMIncident -Urgency &quot;High&quot; -AttachmentPath &quot;C:\Temp\SuperFlows\ResolvingNetworkProblems.vsd&quot;</dev:code>
-			<dev:remarks>
-				<maml:para>This command will locate all incidents that has a title that starts with &quot;Network&quot; and a status of &quot;Active&quot;. After locating the incidents they will be updated with an urgency &quot;High&quot; and then a file will be added to the &quot;Attached Files&quot; section of each incident.</maml:para>
-				<maml:para />
-				<maml:para />
-				<maml:para></maml:para>
-			</dev:remarks>
-			<command:commandLines>
-				<command:commandLine>
-					<command:commandText>
-						<maml:para />
-					</command:commandText>
-				</command:commandLine>
-			</command:commandLines>
-		</command:example>
 	</command:examples>
 	<maml:relatedLinks>
 	</maml:relatedLinks>

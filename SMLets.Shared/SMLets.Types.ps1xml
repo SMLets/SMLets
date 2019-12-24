@@ -49,7 +49,7 @@
         <Members>
             <ScriptProperty>
                 <Name>Class</Name>
-                <GetScriptBlock>Get-SCSMClass -id $this.type.id</GetScriptBlock>
+                <GetScriptBlock>Get-SCSMClass -id $this.type.id -SCSMSession $this.ManagementGroup</GetScriptBlock>
             </ScriptProperty>
         </Members>
     </Type>
@@ -125,7 +125,7 @@ finally
                <GetScriptBlock>
                     if ( $this.SystemType.FullName -eq "System.Enum" )
                     {
-                        (get-scsmenumeration -id $this.enumtype.id).Name
+                        (get-scsmenumeration -id $this.enumtype.id -SCSMSession $this.ManagementGroup).Name
                     }
                     else
                     {

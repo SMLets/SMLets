@@ -82,13 +82,14 @@ Set-SCSMDefaultComputer
 ```
 
 #### Small guide
-   [Using SMLets Beta 3 Post #1 – Using Get-SCSMObject, Get-SCSMClass to Dump Data from SCSM](http://blogs.technet.com/b/servicemanager/archive/2011/04/21/using-smlets-beta-3-post-1-using-get-scsmobject-get-scsmclass-to-dump-data-from-scsm.aspx)  
-   [Using SMLets Beta 3 Post #2–Using Get-SCSMEnumeration, Get-SCSMRelationshipObject, Get-SCSMRelationshipClass to Automatically Resolve Incidents When All Child Activities Are Completed](http://blogs.technet.com/b/servicemanager/archive/2011/04/21/using-smlets-beta-3-post-2-using-get-scsmenumeration-get-scsmrelationshipobject-get-scsmrelationshipclass-to-automatically-resolve-incidents-when-all-child-activities-are-completed.aspx)  
-   [Using SMLets Beta 3 Post #4–Using New-SCSMObject to Create Objects](http://blogs.technet.com/b/servicemanager/archive/2011/05/03/using-smlets-beta-3-post-4-using-new-scsmobject-to-create-objects.aspx)  
-   [Using SMLets Beta 3 Post #6–Getting the Owner of a Service](http://blogs.technet.com/b/servicemanager/archive/2011/05/24/using-smlets-beta-3-post-6-getting-the-owner-of-a-service.aspx)  
-   [Using SMLets Beta 3 Post #7–Deleting Any Object in the UI](http://blogs.technet.com/b/servicemanager/archive/2011/05/25/using-smlets-beta-3-post-7-deleting-any-object-in-the-ui.aspx)  
-   [Using SMLets Beta 3 Post #8–Getting the GUID of an Enumeration](http://blogs.technet.com/b/servicemanager/archive/2011/06/24/using-smlets-beta-3-post-8-getting-the-guid-of-an-enumeration.aspx)  
-   [Using SMLets Beta 3 Post #9–Deleting Objects](http://blogs.technet.com/b/servicemanager/archive/2011/07/13/using-smlets-beta-3-post-9-deleting-objects.aspx)  
-   [Using SMLets Beta 3 Post #10–Getting a User’s Manager and a Manager’s Reports](http://blogs.technet.com/b/servicemanager/archive/2011/12/03/using-smlets-beta-3-post-10-getting-a-user-s-manager-and-a-manager-s-reports.aspx)  
-   [Using SMLets Beta 3 Post #11–Getting a List of All the Classes in a Management Pack](http://blogs.technet.com/b/servicemanager/archive/2012/01/04/using-smlets-beta-3-post-11-getting-a-list-of-all-the-classes-in-a-management-pack.aspx)  
+   [Using SMLets Beta 3 Post #1 – Using Get-SCSMObject, Get-SCSMClass to Dump Data from SCSM](https://techcommunity.microsoft.com/t5/system-center-blog/using-smlets-beta-3-post-1-8211-using-get-scsmobject-get/ba-p/342940)  
+   [Using SMLets Beta 3 Post #2–Using Get-SCSMEnumeration, Get-SCSMRelationshipObject, Get-SCSMRelationshipClass to Automatically Resolve Incidents When All Child Activities Are Completed](https://techcommunity.microsoft.com/t5/system-center-blog/using-smlets-beta-3-post-2-8211-using-get-scsmenumeration-get/ba-p/342944)  
+   [Using SMLets Beta 3 Post #3–Using Set-SCSMObject to Bulk Update Properties on Objects](https://techcommunity.microsoft.com/t5/system-center-blog/using-smlets-beta-3-post-3-8211-using-set-scsmobject-to-bulk/ba-p/342952)  
+   [Using SMLets Beta 3 Post #4–Using New-SCSMObject to Create Objects](https://techcommunity.microsoft.com/t5/system-center-blog/using-smlets-beta-3-post-4-8211-using-new-scsmobject-to-create/ba-p/343089?search-action-id=213564747959&search-result-uid=343089)  
+   [Using SMLets Beta 3 Post #6–Getting the Owner of a Service](https://techcommunity.microsoft.com/t5/system-center-blog/using-smlets-beta-3-post-6-8211-getting-the-owner-of-a-service/ba-p/343341)  
+   [Using SMLets Beta 3 Post #7–Deleting Any Object in the UI](https://techcommunity.microsoft.com/t5/system-center-blog/using-smlets-beta-3-post-7-8211-deleting-any-object-in-the-ui/ba-p/343347?search-action-id=213564909504&search-result-uid=343347)  
+   [Using SMLets Beta 3 Post #8–Getting the GUID of an Enumeration](https://techcommunity.microsoft.com/t5/system-center-blog/using-smlets-beta-3-post-8-8211-getting-the-guid-of-an/ba-p/343605?search-action-id=213565033426&search-result-uid=343605)  
+   [Using SMLets Beta 3 Post #9–Deleting Objects](https://techcommunity.microsoft.com/t5/system-center-blog/using-smlets-beta-3-post-9-8211-deleting-objects/ba-p/343661?search-action-id=213565042519&search-result-uid=343661)  
+   [Using SMLets Beta 3 Post #10–Getting a User’s Manager and a Manager’s Reports](https://techcommunity.microsoft.com/t5/system-center-blog/using-smlets-beta-3-post-10-8211-getting-a-user-8217-s-manager/ba-p/344384?search-action-id=213565162623&search-result-uid=344384)  
+   [Using SMLets Beta 3 Post #11–Getting a List of All the Classes in a Management Pack](https://techcommunity.microsoft.com/t5/system-center-blog/using-smlets-beta-3-post-11-8211-getting-a-list-of-all-the/ba-p/344442?search-action-id=213565171849&search-result-uid=344442)  
 

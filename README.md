@@ -3,7 +3,7 @@
 <b>Warning:</b> this project is not actively development. Only critical reported bugs will be fixed be the owner. Fill free to contribute.
 
 ### Project Description
-This project provides cmdlets for System Center Service Manager 2012/2012 SP1/2012 R2/2016 which can be used to automate common tasks.
+This project provides cmdlets for System Center Service Manager 2012/2012 SP1/2012 R2/2016/2019 which can be used to automate common tasks.
 
 ### Versions
 Version of the SMlets builds on follwing pattern:
@@ -16,7 +16,7 @@ where:
 
 
 #### 2012 vs 2016 version
-The only difference between the version for 2012 and 2016 is target framework: 3.5 for SCSM 2012 and 4.5.1 for SCSM 2016
+The only difference between the version for 2012 and 2016 is target framework: 3.5 for SCSM 2012 and 4.5.1 for SCSM 2016+
 
 ### Installation
 SMLets cmdlets can be installed with two different ways:
